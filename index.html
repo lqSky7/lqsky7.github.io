@@ -20,10 +20,10 @@
 
     <div class="hidden md:flex items-center h-full ml-auto mr-auto mr-autofont-harmonyLight">Hello Everyone! Welcome.</div>
 
-    <div style="height: 48px;" class="flex font-harmonyReg gap-2 items-center border border-gray-400 rounded-lg px-2 py-2  hover:border-gray-800">
-        <i class="fa-brands fa-github"></i>
-        <a href="https://github.com/lqsky7">My Github</a>
-        <i class="fa-solid fa-arrow-right"></i>
+    <div style="height: 48px;" class="flex font-harmonyReg gap-2 items-center border border-gray-400 rounded-lg px-2 py-2  hover:border-gray-800 transition group ">
+        <i class="fa-brands fa-github group-hover:translate-x-1 transition" ></i>
+        <a href="https://github.com/lqsky7" target="_blank" class="group-hover:translate-x-1 transition duration-150">My Github</a>
+        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
     </div>
 </nav>
 
@@ -31,14 +31,14 @@
 <main>
     <!-- gradient for the entire background -->
     <div id="main" class="min-h-screen bg-gradient-to-br from-purple-100 via-orange-50 to-transparent">
-    <!-- now Latest updates from me button -->
+  <!-- this is all that area on top of gradient where we cook -->
         <div id="containerForAllTheContent" class="max-w-4xl mx-auto px-6 pb-32 flex flex-col">
 
-
-            <div id="version-text" class="text-sm font-harmonyReg flex my-6 gap-2 m-auto items-center border py-2 px-2 border-yellow-600 bg-yellow-50 rounded-lg w-fit">
+<!-- this is only for that yellow box -->
+            <div id="version-text" class="text-sm font-harmonyReg flex my-6 gap-2 m-auto items-center border py-2 px-2 border-yellow-600 bg-yellow-50 rounded-lg w-fit shadow-md hover:shadow-lg hover:-translate-y-1 transition group">
                 <div class="w-2 bg-yellow-400 h-2 rounded-full border-yellow-600"></div>
                 <p class="text-yellow-600 font-mono">Latest Updates:</p> <span class="text-yellow-800 font-medium ">placeholder, find something from github/lk that updates</span>
-                <i class="fa-solid fa-arrow-right"></i>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition duration-300"></i>
             </div>
             
 
