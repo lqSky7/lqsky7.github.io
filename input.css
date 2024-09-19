@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "HarmonyReg";
+    src: url("./src/fonts/HarmonyOS_Sans_Regular.ttf");
+}
+
+@font-face {
+    font-family: "HarmonyThin";
+    src: url("./src/fonts/HarmonyOS_Sans_Thin.ttf");
+}
+
+@font-face {
+    font-family: "HarmonyLight";
+    src: url("./src/fonts/HarmonyOS_Sans_Light.ttf");
+}
