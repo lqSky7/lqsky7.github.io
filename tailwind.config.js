@@ -10,6 +10,18 @@ module.exports = {
         // to import these fonts, use @fontfamly boilerplate in input css file, add paths there, and by what name u are importing there, use that inside the array, for what name u want it to appear while using tailiwind, use name: ["array"], use multiple backupfonts in array just in case first one doesn't work.
       },
 
+
+      animation: {
+        typewriter: "typewriter 2s steps(100) forwards"
+      },
+      keyframes: {
+        typewriter: {
+          to: {
+            left: "100%"
+          }
+        }
+
+      }
     },
   },
   plugins: [],
