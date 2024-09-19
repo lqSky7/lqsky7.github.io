@@ -12,15 +12,16 @@ module.exports = {
 
 
       animation: {
-        typewriter: "typewriter 2s steps(100) forwards"
+        typewriter: "typewriter 2s steps(100) forwards",
+        fade: 'fadeOut 5s ease-in-out',
+
       },
       keyframes: {
         typewriter: {
           to: {
             left: "100%"
           }
-        }
-
+        }   
       }
     },
   },
