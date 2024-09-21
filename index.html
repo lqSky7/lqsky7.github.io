@@ -10,7 +10,7 @@
 
 </head>
 <body class="font-harmonyReg h-full">
-
+<script src="fetchCommit.js"></script>
 <!-- ALL THIS NAV STUFF STORES NAVIGATION BAR    -->
 <nav class=" flex-1 bg-slate-50 flex justify-between items-center p-3">
     <a href="#" class="flex-1 gap-2 items-center">
@@ -40,9 +40,9 @@
         <div id="containerForAllTheContent" class="max-w-4xl mx-auto px-6 pb-32 flex flex-col">
 
 <!-- this is only for that yellow box -->
-            <div id="version-text" class="text-sm font-harmonyReg flex my-6 gap-2 m-auto items-center border py-2 px-2 border-yellow-600 bg-yellow-50 rounded-lg w-fit shadow-md hover:shadow-lg hover:-translate-y-1 transition group">
+            <div id="version-text" class=" text-sm font-harmonyLight flex flex-row my-6 gap-2 m-auto items-center border py-2 px-2 border-yellow-600 bg-yellow-50 rounded-lg w-fit shadow-md hover:shadow-lg hover:-translate-y-1 transition group">
                 <div class="w-2 bg-yellow-400 h-2 rounded-full border-yellow-600"></div>
-                <p class="text-yellow-600 font-mono">Latest Updates:</p> <span class="text-yellow-800 font-medium ">placeholder, find something from github/lk that updates</span>
+                <p class="text-yellow-600 font-mono">Latest Updates:</p> <span class="text-yellow-800 font-medium "><p id="latest-commit"></p></span>
                 
                 <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition duration-300"></i>
             </div>

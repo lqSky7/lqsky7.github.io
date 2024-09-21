@@ -1017,6 +1017,10 @@ video {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+.font-harmonyLight {
+  font-family: harmonyLight;
+}
+
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
