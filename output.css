@@ -597,6 +597,11 @@ video {
   margin-right: 0.5rem;
 }
 
+.my-48 {
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+}
+
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -665,6 +670,18 @@ video {
   margin-bottom: -1.5rem;
 }
 
+.-mt-10 {
+  margin-top: -2.5rem;
+}
+
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.mt-\[-200px\] {
+  margin-top: -200px;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -713,6 +730,50 @@ video {
   height: 5rem;
 }
 
+.h-\[150vh\] {
+  height: 150vh;
+}
+
+.h-\[350vh\] {
+  height: 350vh;
+}
+
+.h-\[50vh\] {
+  height: 50vh;
+}
+
+.h-\[70vh\] {
+  height: 70vh;
+}
+
+.h-\[1000vh\] {
+  height: 1000vh;
+}
+
+.h-\[100vh\] {
+  height: 100vh;
+}
+
+.h-\[130vh\] {
+  height: 130vh;
+}
+
+.h-\[120vh\] {
+  height: 120vh;
+}
+
+.h-\[110vh\] {
+  height: 110vh;
+}
+
+.h-\[10vh\] {
+  height: 10vh;
+}
+
+.h-\[105vh\] {
+  height: 105vh;
+}
+
 .max-h-12 {
   max-height: 3rem;
 }
@@ -758,6 +819,11 @@ video {
 .translate-x-4 {
   --tw-translate-x: 1rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scroll-my-48 {
+  scroll-margin-top: 12rem;
+  scroll-margin-bottom: 12rem;
 }
 
 .flex-row {
@@ -921,9 +987,20 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-blue-500 {
+  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(59 130 246 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .via-orange-50 {
   --tw-gradient-to: rgb(255 247 237 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #fff7ed var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
+.via-green-500 {
+  --tw-gradient-to: rgb(34 197 94 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #22c55e var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .to-transparent {
@@ -932,6 +1009,10 @@ video {
 
 .to-black {
   --tw-gradient-to: #000 var(--tw-gradient-to-position);
+}
+
+.to-white {
+  --tw-gradient-to: #fff var(--tw-gradient-to-position);
 }
 
 .bg-fixed {
