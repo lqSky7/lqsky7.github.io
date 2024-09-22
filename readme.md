@@ -10,9 +10,9 @@ Welcome to my portfolio website! This is where I showcase my projects, skills, a
 
 ## ✨ Features
 - **Interactive design** with smooth animations.
-- **Responsive layout** to ensure it looks great on all devices.
+- **Responsive layout** to ensure it looks great on all devices: WIP
 - **Projects gallery** to showcase my best work.
-- **Contact form** for easy communication.
+- **Contact form** for easy communication: WIP
 
 ## 🚀 Technologies Used
 - **Frontend**: Tailwind
@@ -26,11 +26,12 @@ Welcome to my portfolio website! This is where I showcase my projects, skills, a
 
 Here's what I'm currently working on to improve the site:
 
-- [ ] Fix background on mobile devices.
-- [ ] Fix box text on mobile devices.
+- [*] Fix background on mobile devices.
+- [*] Fix box text on mobile devices.
+- [ ] Fix box text on mobile devices (By making it smaller or wrapping it)
 - [ ] Implement photo slider.
 - [ ] More rigorous testing.
-- [ ] Make text smaller on mobile.
+- [ ] Contact Me section.
 
 
 ## 🖼️ GIF Previews of Key Features
