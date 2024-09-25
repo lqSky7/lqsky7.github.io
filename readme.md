@@ -28,10 +28,12 @@ Here's what I'm currently working on to improve the site:
 
 - [*] Fix background on mobile devices.
 - [*] Fix box text on mobile devices.
-- [ ] Fix box text on mobile devices (By making it smaller or wrapping it)
+- [*] Fix box text on mobile devices (By making it smaller or wrapping it)
 - [ ] Implement photo slider.
 - [ ] More rigorous testing.
 - [ ] Contact Me section.
+- [ ] Blockchain surprise
+- [ ] Darkmode! (use colors from that purple pixel 3 live wallpaper)
 
 
 ## 🖼️ GIF Previews of Key Features
