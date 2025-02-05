@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lqsky7</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="fetchCommit.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes float {
@@ -17,39 +18,9 @@
         .skill-card {
             position: relative;
             overflow: hidden;
-            transition: filter 0.4s ease;
+            transition: all 0.3s ease;
         }
         
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
-            width: 0;
-            height: 0;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1;
-        }
-
-        .skill-card:hover::before {
-            width: 300%;
-            height: 300%;
-            opacity: 1;
-        }
-
-        .skill-card:hover {
-            filter: blur(2px);
-        }
-
-        .skill-card > * {
-            position: relative;
-            z-index: 2;
-        }
-
         /* Add new background pattern styles */
         .dark-grid-pattern {
             background-image: linear-gradient(to right, #4f4f4f2e 1px, transparent 1px),
@@ -197,59 +168,245 @@
             transform: translateX(200%);
             transition-delay: 300ms;
         }
-    
+
+        /* Enhanced card animations */
+        .hover-scale {
+            transform: perspective(800px) translateZ(0);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .hover-scale:hover {
+            transform: perspective(800px) translateZ(50px) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        /* Staggered entrance animation for cards */
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Simplified skill-card animation */
+        .skill-card {
+            animation: cardEntrance 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Skill Card Base Styling */
+        .skill-card {
+            display: flex;
+            flex-direction: column;
+            isolation: isolate;
+            position: relative;
+            background: #29292c;
+            border-radius: 1rem;
+            overflow: hidden;
+            font-family: inherit;
+            opacity: 0;
+            animation: cardSpawn 0.5s ease forwards;
+        }
+
+        /* More pastel colors for skill cards */
+        .skill-card:nth-child(1) { 
+            --color: #90b1ff; 
+            --gradient: linear-gradient(to bottom, #b8d1ff, #90b1ff, #a5a6ff); 
+        }
+        .skill-card:nth-child(2) { 
+            --color: #ffb3b3; 
+            --gradient: linear-gradient(to bottom, #ffd1d1, #ffb3b3, #ffa8a8); 
+        }
+        .skill-card:nth-child(3) { 
+            --color: #ffd088; 
+            --gradient: linear-gradient(to bottom, #ffe5b4, #ffd088, #ffc069); 
+        }
+        .skill-card:nth-child(4) { 
+            --color: #b69cff; 
+            --gradient: linear-gradient(to bottom, #d4c4ff, #b69cff, #9f7fff); 
+        }
+        .skill-card:nth-child(5) { 
+            --color: #ff9ec3; 
+            --gradient: linear-gradient(to bottom, #ffc4dd, #ff9ec3, #ff7eb4); 
+        }
+
+        /* Spawn animation for cards */
+        @keyframes cardSpawn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Add spawn delay for each card */
+        .skill-card:nth-child(1) { animation-delay: 0.1s; }
+        .skill-card:nth-child(2) { animation-delay: 0.2s; }
+        .skill-card:nth-child(3) { animation-delay: 0.3s; }
+        .skill-card:nth-child(4) { animation-delay: 0.4s; }
+        .skill-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .skill-card:before {
+            position: absolute;
+            content: "";
+            inset: 0.0625rem;
+            border-radius: 0.9375rem;
+            background: #18181b;
+            z-index: 2;
+        }
+
+        .skill-card:after {
+            position: absolute;
+            content: "";
+            width: 0.25rem;
+            inset: 0.65rem auto 0.65rem 0.5rem;
+            border-radius: 0.125rem;
+            background: var(--gradient);
+            transition: transform 300ms ease;
+            z-index: 4;
+        }
+
+        .skill-card:hover:after {
+            transform: translateX(0.15rem);
+        }
+
+        .skill-card h2 {
+            color: var(--color);
+            padding: 0.65rem 0.25rem 0.4rem 1.25rem;
+            transition: transform 300ms ease;
+            z-index: 5;
+        }
+
+        .skill-card:hover h2 {
+            transform: translateX(0.15rem);
+        }
+
+        .skill-card .space-y-4 {
+            color: #99999d;
+            padding: 0 1.25rem;
+            transition: transform 300ms ease;
+            z-index: 5;
+        }
+
+        .skill-card:hover .space-y-4 {
+            transform: translateX(0.25rem);
+        }
+
+        /* Glow effects */
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            width: 20rem;
+            height: 20rem;
+            background: radial-gradient(circle closest-side at center, white, transparent);
+            opacity: 0;
+            transition: opacity 300ms ease;
+            z-index: 1;
+        }
+
+        .skill-card:hover::before {
+            opacity: 0.1;
+        }
+
+        /* Card hover effect */
+        .skill-card {
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Mobile menu animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        #mobile-menu:not(.hidden) {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
     <script>
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'true' || 
-            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
         }
     </script>
 </head>
-<body class="font-harmonyReg h-full dark:bg-black dark:text-gray-200">
+<body class="font-harmonyReg h-full dark:bg-gray-900 dark:text-gray-300">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-black/80 backdrop-filter backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 flex justify-between items-center p-4">
-        <a href="index.html" class="flex items-center gap-2">
-            <button class="play-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36px" height="36px">
-                    <rect width="36" height="36" x="0" y="0" fill="#fdd835"></rect>
-                    <path fill="#e53935" d="M38.67,42H11.52C11.27,40.62,11,38.57,11,36c0-5,0-11,0-11s1.44-7.39,3.22-9.59 c1.67-2.06,2.76-3.48,6.78-4.41c3-0.7,7.13-0.23,9,1c2.15,1.42,3.37,6.67,3.81,11.29c1.49-0.3,5.21,0.2,5.5,1.28 C40.89,30.29,39.48,38.31,38.67,42z"></path>
-                    <path fill="#b71c1c" d="M39.02,42H11.99c-0.22-2.67-0.48-7.05-0.49-12.72c0.83,4.18,1.63,9.59,6.98,9.79 c3.48,0.12,8.27,0.55,9.83-2.45c1.57-3,3.72-8.95,3.51-15.62c-0.19-5.84-1.75-8.2-2.13-8.7c0.59,0.66,3.74,4.49,4.01,11.7 c0.03,0.83,0.06,1.72,0.08,2.66c4.21-0.15,5.93,1.5,6.07,2.35C40.68,33.85,39.8,38.9,39.02,42z"></path>
-                    <path fill="#212121" d="M35,27.17c0,3.67-0.28,11.2-0.42,14.83h-2C32.72,38.42,33,30.83,33,27.17 c0-5.54-1.46-12.65-3.55-14.02c-1.65-1.08-5.49-1.48-8.23-0.85c-3.62,0.83-4.57,1.99-6.14,3.92L15,16.32 c-1.31,1.6-2.59,6.92-3,8.96v10.8c0,2.58,0.28,4.61,0.54,5.92H10.5c-0.25-1.41-0.5-3.42-0.5-5.92l0.02-11.09 c0.15-0.77,1.55-7.63,3.43-9.94l0.08-0.09c1.65-2.03,2.96-3.63,7.25-4.61c3.28-0.76,7.67-0.25,9.77,1.13 C33.79,13.6,35,22.23,35,27.17z"></path>
-                    <path fill="#01579b" d="M17.165,17.283c5.217-0.055,9.391,0.283,9,6.011c-0.391,5.728-8.478,5.533-9.391,5.337 c-0.913-0.196-7.826-0.043-7.696-5.337C9.209,18,13.645,17.32,17.165,17.283z"></path>
-                    <path fill="#212121" d="M40.739,37.38c-0.28,1.99-0.69,3.53-1.22,4.62h-2.43c0.25-0.19,1.13-1.11,1.67-4.9 c0.57-4-0.23-11.79-0.93-12.78c-0.4-0.4-2.63-0.8-4.37-0.89l0.1-1.99c1.04,0.05,4.53,0.31,5.71,1.49 C40.689,24.36,41.289,33.53,40.739,37.38z"></path>
-                    <path fill="#81d4fa" d="M10.154,20.201c0.261,2.059-0.196,3.351,2.543,3.546s8.076,1.022,9.402-0.554 c1.326-1.576,1.75-4.365-0.891-5.267C19.336,17.287,12.959,16.251,10.154,20.201z"></path>
-                    <path fill="#212121" d="M17.615,29.677c-0.502,0-0.873-0.03-1.052-0.069c-0.086-0.019-0.236-0.035-0.434-0.06 c-5.344-0.679-8.053-2.784-8.052-6.255c0.001-2.698,1.17-7.238,8.986-7.32l0.181-0.002c3.444-0.038,6.414-0.068,8.272,1.818 c1.173,1.191,1.712,3,1.647,5.53c-0.044,1.688-0.785,3.147-2.144,4.217C22.785,29.296,19.388,29.677,17.615,29.677z M17.086,17.973 c-7.006,0.074-7.008,4.023-7.008,5.321c-0.001,3.109,3.598,3.926,6.305,4.27c0.273,0.035,0.48,0.063,0.601,0.089 c0.563,0.101,4.68,0.035,6.855-1.732c0.865-0.702,1.299-1.57,1.326-2.653c0.051-1.958-0.301-3.291-1.073-4.075 c-1.262-1.281-3.834-1.255-6.825-1.222L17.086,17.973z"></path>
-                    <path fill="#e1f5fe" d="M15.078,19.043c1.957-0.326,5.122-0.529,4.435,1.304c-0.489,1.304-7.185,2.185-7.185,0.652 C12.328,19.467,15.078,19.043,15.078,19.043z"></path>
-                </svg>
-                <span class="now">sus</span>
-                <span class="play">home</span>
-            </button>    
-        </a>
-        
-        <div class="flex items-center gap-6">
+    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-slate-950/80 backdrop-filter backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <!-- Left side - Logo/Home -->
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <button class="play-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36px" height="36px">
+                                <rect width="36" height="36" x="0" y="0" fill="#fdd835"></rect>
+                                <path fill="#e53935" d="M38.67,42H11.52C11.27,40.62,11,38.57,11,36c0-5,0-11,0-11s1.44-7.39,3.22-9.59 c1.67-2.06,2.76-3.48,6.78-4.41c3-0.7,7.13-0.23,9,1c2.15,1.42,3.37,6.67,3.81,11.29c1.49-0.3,5.21,0.2,5.5,1.28 C40.89,30.29,39.48,38.31,38.67,42z"></path>
+                                <path fill="#b71c1c" d="M39.02,42H11.99c-0.22-2.67-0.48-7.05-0.49-12.72c0.83,4.18,1.63,9.59,6.98,9.79 c3.48,0.12,8.27,0.55,9.83-2.45c1.57-3,3.72-8.95,3.51-15.62c-0.19-5.84-1.75-8.2-2.13-8.7c0.59,0.66,3.74,4.49,4.01,11.7 c0.03,0.83,0.06,1.72,0.08,2.66c4.21-0.15,5.93,1.5,6.07,2.35C40.68,33.85,39.8,38.9,39.02,42z"></path>
+                                <path fill="#212121" d="M35,27.17c0,3.67-0.28,11.2-0.42,14.83h-2C32.72,38.42,33,30.83,33,27.17 c0-5.54-1.46-12.65-3.55-14.02c-1.65-1.08-5.49-1.48-8.23-0.85c-3.62,0.83-4.57,1.99-6.14,3.92L15,16.32 c-1.31,1.6-2.59,6.92-3,8.96v10.8c0,2.58,0.28,4.61,0.54,5.92H10.5c-0.25-1.41-0.5-3.42-0.5-5.92l0.02-11.09 c0.15-0.77,1.55-7.63,3.43-9.94l0.08-0.09c1.65-2.03,2.96-3.63,7.25-4.61c3.28-0.76,7.67-0.25,9.77,1.13 C33.79,13.6,35,22.23,35,27.17z"></path>
+                                <path fill="#01579b" d="M17.165,17.283c5.217-0.055,9.391,0.283,9,6.011c-0.391,5.728-8.478,5.533-9.391,5.337 c-0.913-0.196-7.826-0.043-7.696-5.337C9.209,18,13.645,17.32,17.165,17.283z"></path>
+                                <path fill="#212121" d="M10.154,20.201c0.261,2.059-0.196,3.351,2.543,3.546s8.076,1.022,9.402-0.554 c1.326-1.576,1.75-4.365-0.891-5.267C19.336,17.287,12.959,16.251,10.154,20.201z"></path>
+                                <path fill="#81d4fa" d="M15.078,19.043c1.957-0.326,5.122-0.529,4.435,1.304c-0.489,1.304-7.185,2.185-7.185,0.652 C12.328,19.467,15.078,19.043,15.078,19.043z"></path>
+                            </svg>
+                            <span class="now">sus</span>
+                            <span class="play">home</span>
+                        </button>    
+                    </a>
+                </div>
 
-            <!-- Add dark mode toggle button before other nav items -->
-            <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
-                <i class="fas fa-moon dark:hidden dark:text-blue-200"></i>
-                <i class="fas fa-sun hidden dark:block dark:text-blue-200"></i>
-            </button>
-            
-            <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
-            <a href="projects.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Projects</a>
-            
-            <a href="https://github.com/lqsky7" class="relative inline-flex items-center justify-center inline-block p-4 px-4 py-2 overflow-hidden font-medium rounded-lg shadow-2xl group">
-               <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-[#4078c0] rounded-full blur-md ease"></span>
-               <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
-                   <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-[#6e5494] rounded-full blur-md"></span>
-                   <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-[#bd2c00] rounded-full blur-md"></span>
-               
-                </span>
-               
-               <span class="relative text-white">GitHub Profile</span>
-           </a>
-           
+                <!-- Desktop menu -->
+                <div class="hidden md:flex items-center gap-6">
+                    <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
+                        <i class="fas fa-moon dark:hidden dark:text-blue-200"></i>
+                        <i class="fas fa-sun hidden dark:block dark:text-blue-200"></i>
+                    </button>
+                    
+                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
+                    <a href="projects.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Projects</a>
+                    
+                    <a href="https://github.com/lqsky7" class="relative inline-flex items-center justify-center p-4 px-4 py-2 overflow-hidden font-medium rounded-lg shadow-2xl group">
+                        <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-[#4078c0] rounded-full blur-md ease"></span>
+                        <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+                            <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-[#6e5494] rounded-full blur-md"></span>
+                            <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-[#bd2c00] rounded-full blur-md"></span>
+                        </span>
+                        <span class="relative text-white">GitHub Profile</span>
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="darkModeToggle-mobile" class="mr-4 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
+                        <i class="fas fa-moon dark:hidden dark:text-blue-200"></i>
+                        <i class="fas fa-sun hidden dark:block dark:text-blue-200"></i>
+                    </button>
+                    <button onClick="toggleMobileMenu()" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg rounded-b-lg">
+                    <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800/50">Home</a>
+                    <a href="projects.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800/50">Projects</a>
+                    <a href="https://github.com/lqsky7" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800/50">GitHub Profile</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -260,14 +417,19 @@
         </div>
         
         <!-- Dark mode background elements -->
-        <div class="hidden dark:block absolute bottom-0 left-0 right-0 top-0 dark-grid-pattern z-0"></div>
-        <div class="hidden dark:block absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full dark-gradient-overlay z-0"></div>
+        <div class="hidden dark:block absolute inset-0 bg-slate-950">
+            <!-- Add grid overlay -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+            <!-- Existing gradient circles -->
+            <div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+            <div class="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+        </div>
         
         <!-- Main content with adjusted dark mode colors -->
         <div class="relative z-10 max-w-7xl mx-auto px-4 py-8">
             <!-- Profile Section -->
             <section class="text-center mb-16 animate-fade-in">
-                <h1 class="text-6xl pt-10 mb-4 font-harmonyLight dark:text-white animate-text">
+                <h1 class="text-6xl pt-10 mb-4 font-harmonyLight dark:text-gray-100 animate-text">
                     <script>
                         // Add this script right after the h1 element
                         document.currentScript.parentElement.innerHTML = 'Diljot_Singh'.split('').map((char, i) => 
@@ -275,7 +437,7 @@
                         ).join('');
                     </script>
                 </h1>
-                <p class="text-2xl text-gray-600 dark:text-gray-300 mb-12">Fresher at Vellore Institute of Technology</p>
+                <p class="text-2xl text-gray-600 dark:text-gray-400 mb-12">Fresher at Vellore Institute of Technology</p>
                 <div class="flex flex-col items-center gap-4">
 
                   
@@ -305,17 +467,17 @@
             <!-- Skills Grid -->
             <div class="grid grid-cols-1 pt-6 md:grid-cols-6 gap-8 mb-16">
                 <!-- Programming Languages -->
-                <div class="md:col-span-2 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fab fa-python text-blue-500 dark:text-pink-200"></i>
+                        <i class="fab fa-python text-blue-300 dark:text-pink-200"></i>
                         Core Languages
                     </h2>
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800/60 transition">
-                            <i class="fab fa-python text-blue-600 dark:text-pink-200"></i>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/40 transition">
+                            <i class="fab fa-python text-blue-400 dark:text-pink-200"></i>
                             <span class="font-medium">Python Development</span>
                         </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fas fa-c text-yellow-600 dark:text-lime-200"></i>
                             <span class="font-medium">C/C++</span>
                         </div>
@@ -323,25 +485,25 @@
                 </div>
             
                 <!-- Web Technologies -->
-                <div class="md:col-span-2 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fas fa-code text-green-500 dark:text-fuchsia-200"></i>
+                        <i class="fas fa-code text-red-300 dark:text-fuchsia-300"></i>
                         Web Stack
                     </h2>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fab fa-html5 text-red-500 dark:text-rose-200"></i>
                             <span>HTML5</span>
                         </div>
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fab fa-css3-alt text-blue-500 dark:text-cyan-200"></i>
                             <span>CSS3</span>
                         </div>
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fas fa-wind text-teal-500 dark:text-sky-200"></i>
                             <span>Tailwind</span>
                         </div>
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fab fa-js text-yellow-500 dark:text-amber-200"></i>
                             <span>JavaScript</span>
                         </div>
@@ -349,17 +511,17 @@
                 </div>
             
                 <!-- Systems -->
-                <div class="md:col-span-2 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fab fa-linux dark:text-green-200"></i>
+                        <i class="fab fa-linux dark:text-yellow-200"></i>
                         Systems
                     </h2>
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-800/60 transition">
-                            <i class="fab fa-ubuntu text-orange-500 dark:text-yellow-200"></i>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-orange-50 dark:hover:bg-slate-700/40 transition">
+                            <i class="fab fa-ubuntu text-orange-500 dark:text-orange-200"></i>
                             <span class="font-medium">Linux Systems</span>
                         </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-orange-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fab fa-docker text-blue-500 dark:text-sky-200"></i>
                             <span class="font-medium">Containerization</span>
                         </div>
@@ -367,17 +529,17 @@
                 </div>
             
                 <!-- Backend -->
-                <div class="md:col-span-3 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-server dark:text-purple-200"></i>
                         Backend
                     </h2>
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700/40 transition">
                             <i class="fa fa-server text-orange-600 dark:text-violet-200"></i>
                             <span class="font-medium">Express.js</span>
                         </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fa-brands fa-node text-blue-500 dark:text-green-200"></i>
                             <span class="font-medium">Node.js</span>
                         </div>
@@ -385,21 +547,21 @@
                 </div>
             
                 <!-- Others -->
-                <div class="md:col-span-3 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-record-vinyl text-pink-500 dark:text-rose-200"></i>
+                        <i class="fa-solid fa-record-vinyl text-rose-300 dark:text-rose-200"></i>
                         Others
                     </h2>
                     <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fa-brands fa-kaggle text-blue-500 dark:text-purple-200"></i>
                             <span class="font-medium">Kaggle and Basic ML</span>
                         </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fa-solid fa-microchip dark:text-slate-200"></i>
                             <span class="font-medium">Worked with Android/Linux Kernels</span>
                         </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-800/60 transition">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700/40 transition">
                             <i class="fa-brands fa-android text-emerald-500 dark:text-lime-200"></i>
                             <span class="font-medium">Custom Roms/Magisk Mods</span>
                         </div>
@@ -407,11 +569,53 @@
                 </div>
             </div>
             
+            <!-- GitHub Stats Section -->
+            <section class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Profile Stats Card -->
+                <div class="group relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900/80 h-full border-2 border-blue-500/20 text-white rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:border-blue-400/30 p-6 text-left
+                    before:absolute before:w-12 before:h-12 before:content-[''] before:right-2 before:top-2 before:z-10 before:bg-blue-600/20 before:rounded-full before:blur-xl before:transition-all before:duration-500 
+                    after:absolute after:z-10 after:w-20 after:h-20 after:content-[''] after:bg-blue-500/20 after:right-8 after:top-4 after:rounded-full after:blur-xl after:transition-all after:duration-500 
+                    hover:before:right-12 hover:before:-bottom-4 hover:before:blur-2xl hover:after:-right-6 hover:after:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-transparent to-blue-900/10"></div>
+                    <h3 class="text-xl font-bold mb-4 relative z-20 text-blue-200/90">Profile Stats</h3>
+                    <div id="github-stats" class="relative z-20">Loading...</div>
+                </div>
             
+                <!-- Languages Card -->
+                <div class="group relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900/80 h-full border-2 border-violet-500/20 text-white rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:border-violet-400/30 p-6 text-left
+                    before:absolute before:w-12 before:h-12 before:content-[''] before:right-2 before:top-2 before:z-10 before:bg-violet-600/20 before:rounded-full before:blur-xl before:transition-all before:duration-500 
+                    after:absolute after:z-10 after:w-20 after:h-20 after:content-[''] after:bg-violet-500/20 after:right-8 after:top-4 after:rounded-full after:blur-xl after:transition-all after:duration-500 
+                    hover:before:right-12 hover:before:-bottom-4 hover:before:blur-2xl hover:after:-right-6 hover:after:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-br from-violet-900/10 via-transparent to-violet-900/10"></div>
+                    <h3 class="text-xl font-bold mb-4 relative z-20 text-violet-200/90">Top Languages</h3>
+                    <div id="github-languages" class="relative z-20 space-y-2">Loading...</div>
+                </div>
+            
+                <!-- Recent Repos Card -->
+                <div class="group relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900/80 h-full border-2 border-fuchsia-500/20 text-white rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:border-fuchsia-400/30 p-6 text-left
+                    before:absolute before:w-12 before:h-12 before:content-[''] before:right-2 before:top-2 before:z-10 before:bg-fuchsia-600/20 before:rounded-full before:blur-xl before:transition-all before:duration-500 
+                    after:absolute after:z-10 after:w-20 after:h-20 after:content-[''] after:bg-fuchsia-500/20 after:right-8 after:top-4 after:rounded-full after:blur-xl after:transition-all after:duration-500 
+                    hover:before:right-12 hover:before:-bottom-4 hover:before:blur-2xl hover:after:-right-6 hover:after:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-br from-fuchsia-900/10 via-transparent to-fuchsia-900/10"></div>
+                    <h3 class="text-xl font-bold mb-4 relative z-20 text-fuchsia-200/90">Recent Repositories</h3>
+                    <div id="github-repos" class="relative z-20 space-y-2">Loading...</div>
+                </div>
+            
+                <!-- Latest Commit Card -->
+                <div class="group relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900/80 h-full border-2 border-rose-500/20 text-white rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:border-rose-400/30 p-6 text-left
+                    before:absolute before:w-12 before:h-12 before:content-[''] before:right-2 before:top-2 before:z-10 before:bg-rose-600/20 before:rounded-full before:blur-xl before:transition-all before:duration-500 
+                    after:absolute after:z-10 after:w-20 after:h-20 after:content-[''] after:bg-rose-500/20 after:right-8 after:top-4 after:rounded-full after:blur-xl after:transition-all after:duration-500 
+                    hover:before:right-12 hover:before:-bottom-4 hover:before:blur-2xl hover:after:-right-6 hover:after:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-900/10 via-transparent to-rose-900/10"></div>
+                    <h3 class="text-xl font-bold mb-4 relative z-20 text-rose-200/90">Latest Commit</h3>
+                    <div id="latest-commit" class="relative z-20">Loading...</div>
+                </div>
+            </section>
+        </div>
     </main>
-    <footer class="sticky-footer bg-white/80 dark:bg-black/80 backdrop-filter backdrop-blur-lg border-t border-gray-200 dark:border-gray-800 py-4 mt-16">
-      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-blue-200">
-          &copy; 2024 Diljot Singh. All rights reserved. 
+    <footer class="sticky-footer bg-white/80 dark:bg-slate-950/80 backdrop-filter backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 py-4 mt-16">
+      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
+          &copy; 2025 DS
         </div>
   </footer>
   
@@ -422,12 +626,5 @@
       }
   </style>
   
-  <script>
-    // Dark mode toggle functionality
-    document.getElementById('darkModeToggle').addEventListener('click', function() {
-        document.documentElement.classList.toggle('dark');
-        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-    });
-  </script>
 </body>
 </html>
