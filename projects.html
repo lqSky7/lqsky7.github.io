@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Diljot Singh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        .blur-cards:hover .project-card:not(:hover) {
+            filter: blur(4px) grayscale(50%);
+            transform: scale(0.95);
+        }
+    </style>
+    <script>
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</head>
+<body class="font-harmonyReg h-full dark:bg-gray-900 dark:text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-filter backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 flex justify-between items-center p-4">
+        <a href="index.html" class="flex items-center gap-2">
+            <i class="fa-solid fa-address-card"></i>
+            <span class="text-xl font-black text-gray-800 dark:text-gray-300">Portfolio</span>
+        </a>
+        <div class="flex items-center gap-6">
+            <!-- Add dark mode toggle button -->
+            <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:block"></i>
+            </button>
+            <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
+            <a href="projects.html" class="text-blue-600 dark:text-blue-400 font-medium">Projects</a>
+            <a href="https://github.com/lqsky7" class="relative inline-flex items-center justify-center inline-block p-4 px-4 py-2 overflow-hidden font-medium rounded-lg shadow-2xl group">
+                <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-[#4078c0] rounded-full blur-md ease"></span>
+                <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+                    <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-[#6e5494] rounded-full blur-md"></span>
+                    <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-[#bd2c00] rounded-full blur-md"></span>
+                </span>
+                <span class="relative text-white">GitHub Profile</span>
+            </a>
+            
+        </div>
+    </nav>
+
+    <main class="min-h-screen bg-gradient-to-b from-purple-100 to-white dark:from-gray-800 dark:to-gray-900 pt-24">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Pinned Projects -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold mb-8 dark:text-white">Featured Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 blur-cards">
+                    <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <h3 class="text-xl font-bold mb-4 dark:text-white">AI Code Review System</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Machine learning-powered code analysis platform with automated suggestions</p>
+                        <div class="flex flex-wrap gap-2 mb-4  dark:text-gray-500">
+                            <span class="px-3 py-1 bg-blue-100 rounded-full text-sm">Python</span>
+                            <span class="px-3 py-1 bg-green-100 rounded-full text-sm">TensorFlow</span>
+                            <span class="px-3 py-1 bg-purple-100 rounded-full text-sm">NLP</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <h3 class="text-xl font-bold mb-4 dark:text-white">Smart Home Automation</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">IoT-based home control system with voice integration</p>
+                        <div class="flex flex-wrap gap-2 mb-4  dark:text-gray-500">
+                            <span class="px-3 py-1 bg-yellow-100 rounded-full text-sm">C++</span>
+                            <span class="px-3 py-1 bg-red-100 rounded-full text-sm">Arduino</span>
+                            <span class="px-3 py-1 bg-teal-100 rounded-full text-sm">IoT</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Projects -->
+            <section>
+                <h2 class="text-3xl font-bold mb-8 dark:text-white">All Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 blur-cards">
+                    <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <h3 class="text-lg font-bold mb-2 dark:text-white">Portfolio Website</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Responsive personal portfolio with dynamic content</p>
+                        <div class="flex flex-wrap gap-2  dark:text-gray-500">
+                            <span class="px-3 py-1 bg-blue-100 rounded-full text-sm">HTML</span>
+                            <span class="px-3 py-1 bg-green-100 rounded-full text-sm">Tailwind</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <h3 class="text-lg font-bold mb-2 dark:text-white">Task Manager App</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Cloud-based task management system with real-time sync</p>
+                        <div class="flex flex-wrap gap-2  dark:text-gray-500">
+                            <span class="px-3 py-1 bg-purple-100 rounded-full text-sm">React</span>
+                            <span class="px-3 py-1 bg-yellow-100 rounded-full text-sm">Firebase</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="sticky-footer bg-white/80 dark:bg-gray-900/80 backdrop-filter backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 py-4 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-300">
+            &copy; 2024 Diljot Singh. All rights reserved. 
+            <span class="mx-2">|</span>
+            <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Privacy Policy</a>
+            <span class="mx-2">|</span> 
+            <a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Terms of Service</a>
+        </div>
+    </footer>
+    
+    <style>
+        .sticky-footer {
+            position: sticky;
+            top: 100vh;
+        }
+    </style>
+    
+    <script>
+        // Dark mode toggle functionality
+        document.getElementById('darkModeToggle').addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        });
+    </script>
+</body>
+
+</html>

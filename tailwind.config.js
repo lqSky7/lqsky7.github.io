@@ -1,8 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html'],
+  content: ['./index.html', './projects.html'],
+  darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        'medium-slate': '#7576DE',
+        'tropical-indigo': '#8479D9',
+        'tropical-indigo-2': '#9183E6',
+        'rich-black': '#080A18',
+        'rich-black-2': '#0A0B1E',
+      },
       fontFamily:{
         harmonyLight:["harmonyLight"],
         harmonyThin: ["harmonyThin"],

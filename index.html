@@ -1,187 +1,433 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-   <head>
-      <script src="https://kit.fontawesome.com/6aec0e467a.js" crossorigin="anonymous"></script>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-      <title>Mysite</title>
-      <link rel="stylesheet" href="output.css">
-   </head>
-   <body class="font-harmonyReg h-full">
-      <script src="fetchCommit.js" async></script>
-      <script src="darkHover.js"></script>
-      <!-- ALL THIS NAV STUFF STORES NAVIGATION BAR    -->
-      <nav class="sticky top-0 z-10 bg-white flex-1 backdrop-filter backdrop-blur-lg bg-opacity-35 border-b border-gray-200 flex justify-between items-center p-3">
-         <!-- fix for firefox later -->
-         <a href="#" class="sticky flex-1 gap-3 items-center">
-             <i class="fa-solid fa-address-card"></i>
-             <span class="text-xl font-black text-gray-800">Portfolio</span>
-         </a>
-         <div class="hidden md:flex items-center h-full ml-auto mr-auto font-harmonyLight">Hello Everyone! Welcome.</div>
-         <div class="flex justify-end flex-1 items-center gap-4">
-             <div class="theme-toggle text-2xl text-gray-800 cursor-pointer">
-                 <i class="fa-regular fa-sun"></i>
-             </div>
-             <div class="font-harmonyReg gap-2 items-center border border-gray-400 rounded-lg px-2 py-2 hover:border-gray-800 hover:translate-x-1 transition">
-                 <i class="fa-brands fa-github group-hover:translate-x-1 transition"></i>
-                 <a href="https://github.com/lqsky7" target="_blank" class="group-hover:translate-x-2 transition">My Github</a>
-                 <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
-             </div>
-         </div>
-         </nav>
-      <!-- MAIN CODE -->
-      <main>
-         <!-- gradient for the entire background -->
-         <div id="main" class="min-h-screen bg-gradient-to-b from-purple-100 via-orange-50 to-transparent">
-            <!-- this is all that area on top of gradient where we cook -->
-            <div id="containerForAllTheContent" class="max-w-7xl mx-auto px-6 pb-32 flex flex-col">
-               <!-- this is only for that yellow box -->
-               <a href="https://github.com/lqSky7/lqsky7.github.io/commits/main/" target="_blank">
-                  <div id="version-text" class=" text-sm font-harmonyLight flex flex-row my-6 gap-2 m-auto items-center border py-2 px-2 border-yellow-600 bg-yellow-50 rounded-lg w-fit shadow-md hover:shadow-lg hover:-translate-y-1 transition group">
-                     <div class="w-2 bg-yellow-400 h-2 rounded-full border-yellow-600"></div>
-                     <p class="text-yellow-600 font-mono">Latest Updates:</p>
-                     <span class="text-yellow-800 font-medium ">
-                        <p id="latest-commit"></p>
-                     </span>
-                     <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition duration-300"></i>
-                  </div>
-               </a>
-               <div id="thatGrayTextAbove" class="flex justify-center items-center gap-10 my-6 text-gray-500">
-                  <div class="flex flex-col items-center">
-                     <i class="fa-solid fa-code"></i>
-                     <p class="text-gray-500 items-center text-center">OSS enthusiast</p>
-                  </div>
-                  <div class="flex flex-col items-center">
-                     <i class="fa-brands fa-apple"></i>
-                     <p class="text-gray-500 text-center">OSX User</p>
-                  </div>
-                  <div class="flex flex-col items-center">
-                     <i class="fa-solid fa-camera"></i>
-                     <p class="text-gray-500 text-center">Photographer</p>
-                  </div>
-               </div>
-               <div id="hellotest">
-                  <p id="MajorText-myBasic-intro" class="flex-col text-5xl font-harmonyReg font-extrabold relative translate-x-4 leading-normal transition">
-                     I am 
-                     <span class="relative flex content-center overflow-hidden w-max before:absolute before:inset-0 before:bg-transparent before:border-b-2 before:border-gray-800 before:animate-typewriter">
-                     Diljot Singh,
-                     </span>
-                     Fresher at VIT Chennai.
-                  </p>
-                  <a href="https://www.linkedin.com/in/dslqsky7" target="_blank">
-                     <div id="Linkdin Profile holder" class="inline-block ml-3 px-6 my-6 font-harmonyReg font-medium text-xl border border-yellow-700 shadow-md rounded-lg p-2 hover:translate-x-1 transition items-center space-x-2">
-                        <!-- Linkdin link -->
-                        <i class="fa-brands fa-linkedin"></i>
-                        <span>Linkedin Profile</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                     </div>
-                  </a>
-               </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lqsky7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .hover-scale { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hover-scale:hover { transform: scale(1.02); }
+        .skill-card {
+            position: relative;
+            overflow: hidden;
+            transition: filter 0.4s ease;
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
 
-            </div>
-         </div>
-         <!-- everything I know boxes. -->
-         <div class="px-6 max-w-7xl mx-auto my-16">
-            
-            <h2 class="flex gap-4 items-center justify-center text-4xl  text-center mb-8 -mt-40"><i class="fa-solid fa-laptop-code"></i>
-                Programming Languages</h2>
-            
-            <div id="box1" class="flex flex-col rounded-lg gap-3 p-6 mx-auto w-11/12 lg:w-3/4 mb-8  border-2">
-               <div class="flex text-blue-600 text-4xl font-bold items-center justify-start gap-3">
-                  <i class="fa-brands fa-python"></i>
-                  <h2 class="items-start">def() -> Python</h2>
-               </div>
-               <div id="TextInPython" class="">
-                  <h3 class="flex text-xl -mb-6 ">Python was my first Programming Language and It's the best scripting Language.</h3>
-               </div>
-               <div class="flex pt-10 text-yellow-600 text-3xl sm:text-4xl font-bold items-center overflow-visible justify-start">
-                  <i class="fa-solid fa-c"></i>
-                  <span class="break-all">++ std::string::npos</span>
-                  <h2 class="items-start"></h2>
-               </div>
-               <h3 class="text-xl">I probably know less C++ than I know Python, but it feels like I have put much more effort in learning C++</h3>
-               <div class="flex justify-end flex-1">
-                  <div  class="font-harmonyReg gap-2 items-center border border-yellow-600 bg-yellow-50 rounded-lg px-2 py-2  hover:border-gray-8002 hover:translate-x-1 transition"q>
-                     <i class="fa-solid fa-feather group-hover:translate-x-1 transition" ></i>
-                     <a href="https://learncpp.com" target="_blank" class="group-hover:translate-x-2 transition">Best C++ Resource Ever</a>
-                     <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
-                  </div>
-               </div>
-            </div>
-            <!-- BOX 2 START -->
-           
-            <h2 class="text-4xl text-center mb-10 flex justify-center items-center gap-3"><i class="fa-solid fa-code"></i>Web Tech </h2>
+        .skill-card:hover::before {
+            width: 300%;
+            height: 300%;
+            opacity: 1;
+        }
 
-                  <div id="box2" class="flex flex-col rounded-lg gap-3 p-6 mx-auto mb-8 w-11/12 lg:w-3/4 border-2 ">
-                     
-                        <div style="color: #e07a5f;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fab fa-html5"></i>
-                           <h2 class="items-start break-all">&lt;div&gt;HTML&lt;/div&gt;</h2>
-                        </div>
-                        <h3 class="text-xl flex mb-8">I learnt it within a day, please praise me &gt;&lt;;</h3>
-                        <div style="color: #3d405b;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fab fa-css3"></i>
-                           <h2 class="items-start break-all">{filter:blur(5px);}</h2>
-                        </div>
-                        <h3 class="text-xl flex mb-8">I know the basics.</h3>
-                        <div style="color: #81b29a;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fa-solid fa-wind"></i>
-                           <h2 class="items-start break-all">@apply Tailwind;</h2>
-                           
-                        </div>
-                        <h3 class="text-xl flex mb-8">how to center elements on navbar</h3>
-                        <div style="color: #eebe71;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fab fa-js"></i>
-                           <h2 class="items-start break-all">let typescript: any = "JavaScript++";</h2>
-                        </div>
-                        <h3 class="text-xl flex mb-8">I'm Cooking</h3>
-                        <div class="flex justify-end mt-6">
-                           <div class="font-harmonyReg gap-2 items-center border border-yellow-600 bg-yellow-50 rounded-lg px-4 py-2 hover:border-gray-800 hover:translate-x-1 transition inline-flex">
-                              <i class="fa-solid fa-palette"></i>
-                              <a href="https://coolors.co/" target="_blank" class="mx-2">Used this for colors in case you're wondering</a>
-                              <i class="fas fa-arrow-right"></i>
-                           </div>
-                        </div>
-                     
-                  </div>
+        .skill-card:hover {
+            filter: blur(2px);
+        }
+
+        .skill-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Add new background pattern styles */
+        .dark-grid-pattern {
+            background-image: linear-gradient(to right, #4f4f4f2e 1px, transparent 1px),
+                            linear-gradient(to bottom, #8080800a 1px, transparent 1px);
+            background-size: 14px 24px;
+        }
+        
+        .dark-gradient-overlay {
+            background: radial-gradient(circle 400px at 50% 300px, #fbfbfb36, #000);
+        }
+
+        .mail-button {
+            font-family: inherit;
+            font-size: 18px;
+            background: royalblue;
+            color: white;
+            padding: 0.7em 1em;
+            padding-left: 0.9em;
+            display: flex;
+            align-items: center;
+            border: none;
+            border-radius: 40px;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .mail-button span {
+            display: block;
+            margin-left: 0.3em;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .mail-button svg {
+            display: block;
+            transform-origin: center center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mail-button:hover .svg-wrapper {
+            animation: fly-1 0.6s ease-in-out infinite alternate;
+        }
+
+        .mail-button:hover svg {
+            transform: translateX(1.2em) rotate(45deg) scale(1.1);
+        }
+
+        .mail-button:hover span {
+            transform: translateX(5em);
+        }
+
+        .mail-button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes fly-1 {
+            from {
+                transform: translateY(0.1em);
+            }
+
+            to {
+                transform: translateY(-0.1em);
+            }
+        }
+
+        /* Add new animation styles */
+        .animate-text {
+            animation: blur 3s ease-out;
+        }
+        
+        .animate-text span {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(4px);
+            animation: revealLetter 0.3s ease-in-out forwards;
+        }
+        
+        @keyframes blur {
+            0% { filter: blur(10px); }
+            100% { filter: blur(0); }
+        }
+        
+        @keyframes revealLetter {
+            to {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        /* Play button styles */
+        .play-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 10px;
+            color: white;
+            text-shadow: 2px 2px rgb(116, 116, 116);
+            text-transform: uppercase;
+            cursor: pointer;
+            border: solid 2px black;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-size: 17px;
+            background-color: hsl(49deg 98% 60%);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .play-button:active {
+            transform: scale(0.9);
+            transition: all 100ms ease;
+        }
+
+        .play-button svg {
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .play {
+            transition: all 0.5s ease;
+            transition-delay: 300ms;
+        }
+
+        .play-button:hover svg {
+            transform: scale(3) translate(50%);
+        }
+
+        .now {
+            position: absolute;
+            left: 0;
+            transform: translateX(-100%);
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .play-button:hover .now {
+            transform: translateX(10px);
+            transition-delay: 300ms;
+        }
+
+        .play-button:hover .play {
+            transform: translateX(200%);
+            transition-delay: 300ms;
+        }
+    
+    </style>
+    <script>
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</head>
+<body class="font-harmonyReg h-full dark:bg-black dark:text-gray-200">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-black/80 backdrop-filter backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 flex justify-between items-center p-4">
+        <a href="index.html" class="flex items-center gap-2">
+            <button class="play-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36px" height="36px">
+                    <rect width="36" height="36" x="0" y="0" fill="#fdd835"></rect>
+                    <path fill="#e53935" d="M38.67,42H11.52C11.27,40.62,11,38.57,11,36c0-5,0-11,0-11s1.44-7.39,3.22-9.59 c1.67-2.06,2.76-3.48,6.78-4.41c3-0.7,7.13-0.23,9,1c2.15,1.42,3.37,6.67,3.81,11.29c1.49-0.3,5.21,0.2,5.5,1.28 C40.89,30.29,39.48,38.31,38.67,42z"></path>
+                    <path fill="#b71c1c" d="M39.02,42H11.99c-0.22-2.67-0.48-7.05-0.49-12.72c0.83,4.18,1.63,9.59,6.98,9.79 c3.48,0.12,8.27,0.55,9.83-2.45c1.57-3,3.72-8.95,3.51-15.62c-0.19-5.84-1.75-8.2-2.13-8.7c0.59,0.66,3.74,4.49,4.01,11.7 c0.03,0.83,0.06,1.72,0.08,2.66c4.21-0.15,5.93,1.5,6.07,2.35C40.68,33.85,39.8,38.9,39.02,42z"></path>
+                    <path fill="#212121" d="M35,27.17c0,3.67-0.28,11.2-0.42,14.83h-2C32.72,38.42,33,30.83,33,27.17 c0-5.54-1.46-12.65-3.55-14.02c-1.65-1.08-5.49-1.48-8.23-0.85c-3.62,0.83-4.57,1.99-6.14,3.92L15,16.32 c-1.31,1.6-2.59,6.92-3,8.96v10.8c0,2.58,0.28,4.61,0.54,5.92H10.5c-0.25-1.41-0.5-3.42-0.5-5.92l0.02-11.09 c0.15-0.77,1.55-7.63,3.43-9.94l0.08-0.09c1.65-2.03,2.96-3.63,7.25-4.61c3.28-0.76,7.67-0.25,9.77,1.13 C33.79,13.6,35,22.23,35,27.17z"></path>
+                    <path fill="#01579b" d="M17.165,17.283c5.217-0.055,9.391,0.283,9,6.011c-0.391,5.728-8.478,5.533-9.391,5.337 c-0.913-0.196-7.826-0.043-7.696-5.337C9.209,18,13.645,17.32,17.165,17.283z"></path>
+                    <path fill="#212121" d="M40.739,37.38c-0.28,1.99-0.69,3.53-1.22,4.62h-2.43c0.25-0.19,1.13-1.11,1.67-4.9 c0.57-4-0.23-11.79-0.93-12.78c-0.4-0.4-2.63-0.8-4.37-0.89l0.1-1.99c1.04,0.05,4.53,0.31,5.71,1.49 C40.689,24.36,41.289,33.53,40.739,37.38z"></path>
+                    <path fill="#81d4fa" d="M10.154,20.201c0.261,2.059-0.196,3.351,2.543,3.546s8.076,1.022,9.402-0.554 c1.326-1.576,1.75-4.365-0.891-5.267C19.336,17.287,12.959,16.251,10.154,20.201z"></path>
+                    <path fill="#212121" d="M17.615,29.677c-0.502,0-0.873-0.03-1.052-0.069c-0.086-0.019-0.236-0.035-0.434-0.06 c-5.344-0.679-8.053-2.784-8.052-6.255c0.001-2.698,1.17-7.238,8.986-7.32l0.181-0.002c3.444-0.038,6.414-0.068,8.272,1.818 c1.173,1.191,1.712,3,1.647,5.53c-0.044,1.688-0.785,3.147-2.144,4.217C22.785,29.296,19.388,29.677,17.615,29.677z M17.086,17.973 c-7.006,0.074-7.008,4.023-7.008,5.321c-0.001,3.109,3.598,3.926,6.305,4.27c0.273,0.035,0.48,0.063,0.601,0.089 c0.563,0.101,4.68,0.035,6.855-1.732c0.865-0.702,1.299-1.57,1.326-2.653c0.051-1.958-0.301-3.291-1.073-4.075 c-1.262-1.281-3.834-1.255-6.825-1.222L17.086,17.973z"></path>
+                    <path fill="#e1f5fe" d="M15.078,19.043c1.957-0.326,5.122-0.529,4.435,1.304c-0.489,1.304-7.185,2.185-7.185,0.652 C12.328,19.467,15.078,19.043,15.078,19.043z"></path>
+                </svg>
+                <span class="now">sus</span>
+                <span class="play">home</span>
+            </button>    
+        </a>
+        
+        <div class="flex items-center gap-6">
+
+            <!-- Add dark mode toggle button before other nav items -->
+            <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
+                <i class="fas fa-moon dark:hidden dark:text-blue-200"></i>
+                <i class="fas fa-sun hidden dark:block dark:text-blue-200"></i>
+            </button>
+            
+            <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
+            <a href="projects.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Projects</a>
+            
+            <a href="https://github.com/lqsky7" class="relative inline-flex items-center justify-center inline-block p-4 px-4 py-2 overflow-hidden font-medium rounded-lg shadow-2xl group">
+               <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-[#4078c0] rounded-full blur-md ease"></span>
+               <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+                   <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-[#6e5494] rounded-full blur-md"></span>
+                   <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-[#bd2c00] rounded-full blur-md"></span>
                
+                </span>
+               
+               <span class="relative text-white">GitHub Profile</span>
+           </a>
+           
+        </div>
+    </nav>
 
-                  <h2 class="text-4xl text-center mb-10 flex justify-center items-center gap-3"><i class="fa-solid fa-feather-pointed"></i>Misc </h2>
-                  <div class="flex flex-col rounded-lg gap-3 p-6 mx-auto w-11/12 lg:w-3/4 mb-8  border-2">
-                     
-                        <div style="color: #212121;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fa-brands fa-github"></i>
-                           <h2 class="items-start break-all">Github</h2>
-                        </div>
-                        <h3 class="text-xl flex mb-8">I'm very comfortable with Git and have been using it for a long time now.</h3>
-                        <div style="color: #15a6f0;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fa-brands fa-ubuntu"></i>
-                           <h2 class="items-start break-all">Linux, bash, WMs, yay...</h2>
-                        </div>
-                        <h3 class="text-xl flex mb-8">init systems, display managers... All the basics are covered.</h3>
-                        <div style="color: #84b082;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fa-brands fa-android"></i>
-                           <h2 class="items-start break-all">Android;</h2>
-                           
-                        </div>
-                        <h3 class="text-xl flex mb-8">Avid contributor in Android Custom Rom Community, Magisk/KSU Modules, Recovery Development, OEM Rom Porting... Again all the basics are covered.</h3>
-                        <div style="color: #fcaa67;" class="flex text-3xl sm:text-4xl font-bold items-center justify-start gap-3">
-                           <i class="fa-solid fa-microchip"></i>
-                           <h2 class="items-start break-all">Kernel Buildbot</h2>
-                        </div>
-                        <h3 class="text-xl flex mb-8">I might know some things about Linux/Android Kenrels. Please don't ask me any questions about it</h3>
-                        <div class="flex justify-end mt-6">
+    <main class="min-h-screen relative pt-20">
+        <!-- Light mode background -->
+        <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] dark:hidden">
+            <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-400 opacity-20 blur-[100px]"></div>
+        </div>
+        
+        <!-- Dark mode background elements -->
+        <div class="hidden dark:block absolute bottom-0 left-0 right-0 top-0 dark-grid-pattern z-0"></div>
+        <div class="hidden dark:block absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full dark-gradient-overlay z-0"></div>
+        
+        <!-- Main content with adjusted dark mode colors -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 py-8">
+            <!-- Profile Section -->
+            <section class="text-center mb-16 animate-fade-in">
+                <h1 class="text-6xl pt-10 mb-4 font-harmonyLight dark:text-white animate-text">
+                    <script>
+                        // Add this script right after the h1 element
+                        document.currentScript.parentElement.innerHTML = 'Diljot_Singh'.split('').map((char, i) => 
+                            `<span style="animation-delay: ${i * 0.1}s">${char}</span>`
+                        ).join('');
+                    </script>
+                </h1>
+                <p class="text-2xl text-gray-600 dark:text-gray-300 mb-12">Fresher at Vellore Institute of Technology</p>
+                <div class="flex flex-col items-center gap-4">
 
-                           </div>
-                        
-                     </div>
-                  </div>
-            </html>
-         </div>
-         <!-- boxes end! -->
-         <div class=""></div>
-      </main>
-   </body>
+                  
+
+                  <a href="https://linkedin.com/in/dslqsky7" class="relative border-yellow-50 inline-flex items-center justify-center inline-block p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group">
+                     <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-blue-700 rounded-full blur-md ease"></span>
+                     <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
+                         <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
+                         <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-blue-500 rounded-full blur-md"></span>
+                     </span>
+                     <span class="relative text-white">LinkedIn Profile</span>
+                 </a>
+                 
+                 <a href="mailto:your.email@example.com" class="mail-button">
+                    <div class="svg-wrapper">
+                      <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" fill="currentColor"></path>
+                      </svg>
+                    </div>
+                    <span>Mail</span>
+                  </a>
+                 
+                </div>
+            </section>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-1 pt-6 md:grid-cols-6 gap-8 mb-16">
+                <!-- Programming Languages -->
+                <div class="md:col-span-2 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fab fa-python text-blue-500 dark:text-pink-200"></i>
+                        Core Languages
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fab fa-python text-blue-600 dark:text-pink-200"></i>
+                            <span class="font-medium">Python Development</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fas fa-c text-yellow-600 dark:text-lime-200"></i>
+                            <span class="font-medium">C/C++</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Web Technologies -->
+                <div class="md:col-span-2 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fas fa-code text-green-500 dark:text-fuchsia-200"></i>
+                        Web Stack
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fab fa-html5 text-red-500 dark:text-rose-200"></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fab fa-css3-alt text-blue-500 dark:text-cyan-200"></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fas fa-wind text-teal-500 dark:text-sky-200"></i>
+                            <span>Tailwind</span>
+                        </div>
+                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-green-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fab fa-js text-yellow-500 dark:text-amber-200"></i>
+                            <span>JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Systems -->
+                <div class="md:col-span-2 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fab fa-linux dark:text-green-200"></i>
+                        Systems
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fab fa-ubuntu text-orange-500 dark:text-yellow-200"></i>
+                            <span class="font-medium">Linux Systems</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-orange-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fab fa-docker text-blue-500 dark:text-sky-200"></i>
+                            <span class="font-medium">Containerization</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Backend -->
+                <div class="md:col-span-3 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-server dark:text-purple-200"></i>
+                        Backend
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/60 transition">
+                            <i class="fa fa-server text-orange-600 dark:text-violet-200"></i>
+                            <span class="font-medium">Express.js</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fa-brands fa-node text-blue-500 dark:text-green-200"></i>
+                            <span class="font-medium">Node.js</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Others -->
+                <div class="md:col-span-3 hover-scale bg-white dark:bg-black/40 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-record-vinyl text-pink-500 dark:text-rose-200"></i>
+                        Others
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fa-brands fa-kaggle text-blue-500 dark:text-purple-200"></i>
+                            <span class="font-medium">Kaggle and Basic ML</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fa-solid fa-microchip dark:text-slate-200"></i>
+                            <span class="font-medium">Worked with Android/Linux Kernels</span>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-black/60 rounded-lg hover:bg-pink-50 dark:hover:bg-gray-800/60 transition">
+                            <i class="fa-brands fa-android text-emerald-500 dark:text-lime-200"></i>
+                            <span class="font-medium">Custom Roms/Magisk Mods</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+    </main>
+    <footer class="sticky-footer bg-white/80 dark:bg-black/80 backdrop-filter backdrop-blur-lg border-t border-gray-200 dark:border-gray-800 py-4 mt-16">
+      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-blue-200">
+          &copy; 2024 Diljot Singh. All rights reserved. 
+        </div>
+  </footer>
+  
+  <style>
+      .sticky-footer {
+          position: sticky;
+          top: 100vh;
+      }
+  </style>
+  
+  <script>
+    // Dark mode toggle functionality
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    });
+  </script>
+</body>
 </html>
