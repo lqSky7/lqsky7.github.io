@@ -1,5 +1,5 @@
-// Import token from config file
-let GITHUB_TOKEN = 'REPLACE_ME'; // Will be replaced during build
+
+let GITHUB_TOKEN = 'REPLACE_ME'; // will be replaced by gh actions
 
 async function fetchWithAuth(url) {
   const headers = {
@@ -10,7 +10,6 @@ async function fetchWithAuth(url) {
 const owner = 'lqsky7';
 const repo = 'lqsky7.github.io';
 
-// GitHub API endpoints with authentication
 async function fetchWithAuth(url) {
     try {
         const headers = {
@@ -32,7 +31,7 @@ async function fetchWithAuth(url) {
     }
 }
 
-// Fetch all GitHub data
+
 async function fetchGitHubData() {
     try {
         console.log('Fetching GitHub data...'); // Debug log
@@ -49,7 +48,7 @@ async function fetchGitHubData() {
             throw new Error('Failed to fetch some GitHub data');
         }
 
-        // Get language stats from repos
+
         const languages = {};
         reposData.forEach(repo => {
             if (repo.language) {
@@ -57,12 +56,12 @@ async function fetchGitHubData() {
             }
         });
 
-        // Sort repos by updated date
+
         const recentRepos = reposData
             .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
             .slice(0, 3);
 
-        // Update DOM with error handling
+
         updateGitHubCards({
             profile: profileData,
             languages,
@@ -75,7 +74,7 @@ async function fetchGitHubData() {
     }
 }
 
-// Update the cards in the DOM
+
 function updateGitHubCards(data) {
     try {
         // Profile Stats Card
@@ -91,7 +90,7 @@ function updateGitHubCards(data) {
             `;
         }
 
-        // Languages Card
+
         if (document.getElementById('github-languages')) {
             const languagesHtml = Object.entries(data.languages)
                 .sort((a, b) => b[1] - a[1])
@@ -106,7 +105,7 @@ function updateGitHubCards(data) {
             document.getElementById('github-languages').innerHTML = languagesHtml;
         }
 
-        // Recent Repos Card
+
         if (document.getElementById('github-repos')) {
             document.getElementById('github-repos').innerHTML = data.recentRepos
                 .map(repo => `
@@ -118,7 +117,7 @@ function updateGitHubCards(data) {
                 `).join('');
         }
 
-        // Latest Commit Card
+
         if (document.getElementById('latest-commit')) {
             document.getElementById('latest-commit').innerHTML = `
                 <p class="font-medium text-pink-200">${data.latestCommit.commit.message}</p>
@@ -133,7 +132,7 @@ function updateGitHubCards(data) {
     }
 }
 
-// Handle error state
+
 function updateCardsWithError() {
     const errorMessage = `
         <div class="text-red-300">
@@ -150,5 +149,5 @@ function updateCardsWithError() {
     });
 }
 
-// Wait for DOM to be ready before fetching data
+
 document.addEventListener('DOMContentLoaded', fetchGitHubData);
