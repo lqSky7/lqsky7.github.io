@@ -504,21 +504,24 @@
     </nav>
 
     <main class="min-h-screen relative pt-20">
-        <!-- Light mode background -->
-        <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] dark:hidden">
-            <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-400 opacity-20 blur-[100px]"></div>
+        <!-- Background patterns -->
+        <div class="absolute inset-0 -z-10 h-full w-full">
+            <!-- Light mode background -->
+            <div class="dark:hidden">
+                <div class="absolute inset-0 bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+                <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-400 opacity-20 blur-[100px]"></div>
+            </div>
+
+            <!-- Dark mode background -->
+            <div class="hidden dark:block">
+                <div class="absolute inset-0 bg-slate-950"></div>
+                <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+                <div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+                <div class="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+            </div>
         </div>
-        
-        <!-- Dark mode background elements -->
-        <div class="hidden dark:block absolute inset-0 bg-slate-950">
-            <!-- Add grid overlay -->
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-            <!-- Existing gradient circles -->
-            <div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
-            <div class="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
-        </div>
-        
-        <!-- Main content with adjusted dark mode colors -->
+
+        <!-- Main content -->
         <div class="relative z-10 max-w-7xl mx-auto px-4 py-8">
             <!-- Profile Section -->
             <section class="text-center mb-16 animate-fade-in">
