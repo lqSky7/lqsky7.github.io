@@ -1,11 +1,4 @@
-
-let GITHUB_TOKEN = 'REPLACE_ME'; // will be replaced by gh actions
-
-async function fetchWithAuth(url) {
-  const headers = {
-    'Accept': 'application/vnd.github.v3+json',
-    'Authorization': `token ${GITHUB_TOKEN}`
-  };
+let GITHUB_TOKEN = ''; // will be replaced by gh actions
 
 const owner = 'lqsky7';
 const repo = 'lqsky7.github.io';
@@ -15,7 +8,7 @@ async function fetchWithAuth(url) {
         const headers = {
             'Accept': 'application/vnd.github.v3+json'
         };
-        
+
         if (GITHUB_TOKEN) {
             headers['Authorization'] = `token ${GITHUB_TOKEN}`;
         }
@@ -30,7 +23,6 @@ async function fetchWithAuth(url) {
         return null;
     }
 }
-
 
 async function fetchGitHubData() {
     try {
@@ -48,7 +40,6 @@ async function fetchGitHubData() {
             throw new Error('Failed to fetch some GitHub data');
         }
 
-
         const languages = {};
         reposData.forEach(repo => {
             if (repo.language) {
@@ -56,11 +47,9 @@ async function fetchGitHubData() {
             }
         });
 
-
         const recentRepos = reposData
             .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
             .slice(0, 3);
-
 
         updateGitHubCards({
             profile: profileData,
@@ -73,7 +62,6 @@ async function fetchGitHubData() {
         updateCardsWithError();
     }
 }
-
 
 function updateGitHubCards(data) {
     try {
@@ -90,7 +78,6 @@ function updateGitHubCards(data) {
             `;
         }
 
-
         if (document.getElementById('github-languages')) {
             const languagesHtml = Object.entries(data.languages)
                 .sort((a, b) => b[1] - a[1])
@@ -105,7 +92,6 @@ function updateGitHubCards(data) {
             document.getElementById('github-languages').innerHTML = languagesHtml;
         }
 
-
         if (document.getElementById('github-repos')) {
             document.getElementById('github-repos').innerHTML = data.recentRepos
                 .map(repo => `
@@ -116,7 +102,6 @@ function updateGitHubCards(data) {
                     </a>
                 `).join('');
         }
-
 
         if (document.getElementById('latest-commit')) {
             document.getElementById('latest-commit').innerHTML = `
@@ -131,7 +116,6 @@ function updateGitHubCards(data) {
         updateCardsWithError();
     }
 }
-
 
 function updateCardsWithError() {
     const errorMessage = `
@@ -148,6 +132,5 @@ function updateCardsWithError() {
         }
     });
 }
-
 
 document.addEventListener('DOMContentLoaded', fetchGitHubData);

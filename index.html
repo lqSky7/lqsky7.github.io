@@ -336,6 +336,97 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Updated Skill Card Base Styling */
+        .skill-card {
+            position: relative;
+            background: rgb(38 38 38);
+            min-height: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        /* Enhanced Before and After Elements for Gradient Orbs */
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            width: 3rem;
+            height: 3rem;
+            right: 0.25rem;
+            top: 0.25rem;
+            z-index: 1;
+            border-radius: 9999px;
+            filter: blur(1.5rem);
+            transition: all 0.5s ease;
+            box-shadow: 20px 20px 20px 30px transparent;
+        }
+
+        .skill-card::after {
+            content: '';
+            position: absolute;
+            width: 5rem;
+            height: 5rem;
+            right: 2rem;
+            top: 0.75rem;
+            z-index: 1;
+            border-radius: 9999px;
+            filter: blur(2rem);
+            transition: all 0.5s ease;
+        }
+
+        /* Enhanced Hover Effects */
+        .skill-card:hover::before {
+            right: 3rem;
+            bottom: -2rem;
+            filter: blur(2.5rem);
+            box-shadow: 20px 20px 20px 30px rgba(162, 28, 175, 0.2); /* Matching the original box-shadow */
+        }
+
+        .skill-card:hover::after {
+            transform: translateX(30px);
+            filter: blur(2.5rem);
+        }
+
+        /* Individual Card Colors with Enhanced Gradients */
+        .skill-card:nth-child(1)::before { background: rgb(139, 92, 246); }
+        .skill-card:nth-child(1)::after { background: rgb(251, 113, 133); }
+
+        .skill-card:nth-child(2)::before { background: rgb(99, 102, 241); }
+        .skill-card:nth-child(2)::after { background: rgb(244, 114, 182); }
+
+        .skill-card:nth-child(3)::before { background: rgb(234, 88, 12); }
+        .skill-card:nth-child(3)::after { background: rgb(234, 179, 8); }
+
+        .skill-card:nth-child(4)::before { background: rgb(16, 185, 129); }
+        .skill-card:nth-child(4)::after { background: rgb(59, 130, 246); }
+
+        .skill-card:nth-child(5)::before { background: rgb(236, 72, 153); }
+        .skill-card:nth-child(5)::after { background: rgb(168, 85, 247); }
+
+        /* Content Styling with Better Contrast */
+        .skill-card h2 {
+            position: relative;
+            z-index: 2;
+            color: inherit;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .skill-card .space-y-4 {
+            position: relative;
+            z-index: 2;
+            color: inherit;
+        }
+
+        /* Additional content contrast fixes */
+        .skill-card .space-y-4 span {
+            color: inherit;
+            font-weight: 500;
+        }
+
     </style>
     <script>
         function toggleMobileMenu() {
@@ -469,7 +560,7 @@
             <!-- Skills Grid -->
             <div class="grid grid-cols-1 pt-6 md:grid-cols-6 gap-8 mb-16">
                 <!-- Programming Languages -->
-                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         <i class="fab fa-python"></i>
                         Core Languages
@@ -487,7 +578,7 @@
                 </div>
             
                 <!-- Web Technologies -->
-                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         <i class="fas fa-code text-red-300 dark:text-red-300"></i>
                         Web Stack
@@ -513,7 +604,7 @@
                 </div>
             
                 <!-- Systems -->
-                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         <i class="fab fa-linux dark:text-yellow-200"></i>
                         Systems
@@ -532,7 +623,7 @@
         
 
                 <!-- Backend -->
-                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-server"></i>
                         Backend
@@ -551,7 +642,7 @@
                 </div>
             
                 <!-- Others -->
-                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
                     <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-record-vinyl"></i>
                         Others
