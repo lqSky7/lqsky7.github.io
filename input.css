@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer base {
+    :root {
+      color-scheme: light;
+    }
+    
+    .dark {
+      color-scheme: dark;
+    }
+  }
 /* Add this layer directive */
 @layer base {
     @font-face {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-full" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -417,7 +417,129 @@
             font-weight: 500;
         }
 
-    </style>
+        /* Hamburger icon styles */
+        #checkbox { display: none; }
+.toggle {
+    position: relative;
+    width: 20px;  
+    cursor: pointer;
+    margin: auto;
+    display: block;
+    height: calc(3px * 3 + 2px * 2);  
+}
+.bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;  
+    border-radius: calc(3px / 2);
+    background: #c3c3c3;
+    opacity: 1;
+    transition: none 0.35s cubic-bezier(.5,-0.35,.35,1.5) 0s;
+}
+.bar--top { 
+    bottom: calc(50% + 5px + 3px/2);  
+    transition-property: bottom, transform;
+    transition-delay: calc(0s + 0.35s), 0s;
+}
+.bar--middle { 
+    top: calc(50% - 3px/2);  
+    transition-property: opacity;
+    transition-delay: calc(0s + 0.35s);
+}
+.bar--bottom { 
+    top: calc(50% + 5px + 3px/2); 
+    transition-property: top, transform;
+    transition-delay: calc(0s + 0.35s), 0s;
+}
+#checkbox:checked + .toggle .bar--top {
+    bottom: calc(50% - 3px/2);
+    transform: rotate(135deg);
+    transition-delay: 0s, calc(0s + 0.35s);
+}
+#checkbox:checked + .toggle .bar--bottom {
+    top: calc(50% - 3px/2);
+    transform: rotate(225deg);
+    transition-delay: 0s, calc(0s + 0.35s);
+}
+
+/* The switch - the box around the slider */
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 3.5em;
+  height: 2em;
+  transform-style: preserve-3d;
+  perspective: 500px;
+  animation: toggle__animation 3s infinite;
+}
+
+.switch::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  filter: blur(20px);
+  z-index: -1;
+  border-radius: 50px;
+  background-color: #d8ff99;
+  background-image: radial-gradient(at 21% 46%, hsla(183,65%,60%,1) 0px, transparent 50%),
+radial-gradient(at 23% 25%, hsla(359,74%,70%,1) 0px, transparent 50%),
+radial-gradient(at 20% 1%, hsla(267,83%,75%,1) 0px, transparent 50%),
+radial-gradient(at 86% 87%, hsla(204,69%,68%,1) 0px, transparent 50%),
+radial-gradient(at 99% 41%, hsla(171,72%,77%,1) 0px, transparent 50%),
+radial-gradient(at 55% 24%, hsla(138,60%,62%,1) 0px, transparent 50%);
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fdfefedc;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  left: 0.3em;
+  bottom: 0.35em;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -10px 10px 0px inset,
+     rgba(0, 0, 0, 0.09) 0px -1px 15px -8px;
+  background-color: #ff99c5;
+  background-image: radial-gradient(at 81% 39%, hsla(327,79%,79%,1) 0px, transparent 50%),
+  radial-gradient(at 11% 72%, hsla(264,64%,79%,1) 0px, transparent 50%),
+  radial-gradient(at 23% 20%, hsla(75,98%,71%,1) 0px, transparent 50%);
+}
+
+.input__check:checked + .slider {
+  background-color: #17202A;
+}
+
+.input__check:checked + .slider:before {
+  transform: translateX(1.5em);
+}
+
+   </style>
     <script>
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
@@ -428,7 +550,7 @@
 
 <body class="font-harmonyReg h-full dark:bg-gray-900 dark:text-gray-300">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-slate-950/80  backdrop-filter backdrop-saturate-200 backdrop-brightness-100 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
+    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-slate-950/80 backdrop-filter backdrop-saturate-200 backdrop-brightness-100 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
                 <!-- Left side - Logo/Home -->
@@ -452,11 +574,14 @@
 
                 <!-- Desktop menu -->
                 <div class="hidden md:flex items-center gap-6">
-                    <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
-                        <i class="fas fa-moon dark:hidden dark:text-blue-200"></i>
-                        <i class="fas fa-sun hidden dark:block dark:text-blue-200"></i>
-                    </button>
-                    
+
+                    <!-- From Uiverse.io by EddyBel --> 
+
+                <label class="switch">
+                  <input type="checkbox" class="input__check">
+                          <span class="slider"></span>
+                     </label>
+
                     <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
                     <a href="projects.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Projects</a>
                     
@@ -473,12 +598,18 @@
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
                     <button id="darkModeToggle-mobile" class="mr-4 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">
-                        <i class="fas fa-moon dark:hidden dark:text-blue-200"></i>
-                        <i class="fas fa-sun hidden dark:block dark:text-blue-200"></i>
+                                            <!-- From Uiverse.io by EddyBel --> 
+                <label class="switch">
+                    <input type="checkbox" class="input__check">
+                            <span class="slider"></span>
+                       </label>
                     </button>
-                    <button onClick="toggleMobileMenu()" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
+                    <input type="checkbox" id="checkbox" onchange="toggleMobileMenu()">
+                    <label for="checkbox" class="toggle">
+                        <div class="bar bar--top"></div>
+                        <div class="bar bar--middle"></div>
+                        <div class="bar bar--bottom"></div>
+                    </label>
                 </div>
             </div>
 
