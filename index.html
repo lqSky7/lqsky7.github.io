@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-smooth" data-theme="light">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,279 +19,806 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="scripts.js" defer></script>
     <script src="fetchCommit.js" defer></script>
+    
+    <style>
+        /* Base styles */
+        :root {
+            --black: #000000;
+            --dark-gray: #111111;
+            --gray: #333333;
+            --light-gray: #666666;
+            --white: #ffffff;
+            --accent: #888888;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'harmonyReg', sans-serif;
+        }
+        
+        /* Fixed Aurora Text Effect - Removed from here, now only applied to the name */
+        .aurora-text {
+            /* This style will be repurposed only for the name */
+        }
+
+        @keyframes textShine {
+            /* Keeping for the name animation */
+        }
+
+        /* New Professional Aurora Effect - With angled gradient */
+        .name-aurora {
+            background: linear-gradient(
+                45deg, /* Changed from 'to right' to '45deg' for a diagonal gradient */
+                #93a5cf, /* Soft blue */
+                #e4efe9, /* Light mint */
+                #c3cfe2, /* Lavender blue */
+                #d6e4f0, /* Sky blue */
+                #f5f7fa, /* White smoke */
+                #bcd2ee, /* Light steel blue */
+                #93a5cf  /* Back to start */
+            );
+            background-size: 600% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: nameShine 15s ease-in-out infinite;
+            display: inline-block;
+            font-weight: 800;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
+            letter-spacing: 1px;
+            padding: 0.1em 0;
+        }
+
+        @keyframes nameShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Navbar styles - Completely redesigned */
+        .mono-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .mono-navbar.scrolled {
+            padding: 0.5rem 0;
+            background-color: rgba(0, 0, 0, 0.95);
+        }
+        
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .navbar-logo {
+            position: relative;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .navbar-logo::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-logo:hover::after {
+            width: 100%;
+        }
+        
+        .navbar-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .navbar-link {
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+        }
+        
+        .navbar-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-link:hover {
+            color: white;
+        }
+        
+        .navbar-link:hover::after {
+            width: 100%;
+        }
+        
+        .navbar-button {
+            background-color: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.25rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navbar-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-button:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        
+        .navbar-button:hover::before {
+            left: 0;
+        }
+        
+        .navbar-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .toggle-bar {
+            display: block;
+            width: 25px;
+            height: 2px;
+            margin: 5px auto;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-mobile {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.98);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 1000;
+        }
+        
+        .navbar-mobile.active {
+            transform: translateX(0);
+        }
+        
+        .navbar-mobile-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .navbar-mobile-link {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .navbar-mobile-link:hover {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-links {
+                display: none;
+            }
+            
+            .navbar-mobile-toggle {
+                display: block;
+            }
+        }
+        
+        /* Card styles */
+        .mono-card {
+            background: linear-gradient(145deg, #0a0a0a, #111111);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .mono-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .mono-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.05), 
+                transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .mono-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Skill bubbles */
+        .skill-bubble {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-bubble:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        /* Button styles */
+        .mono-button {
+            position: relative;
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .mono-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .mono-button:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .mono-button:hover::before {
+            width: 100%;
+        }
+        
+        /* Background elements */
+        .noise-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cdefs%3E%3Cfilter id='a' x='0' y='0' width='300%25' height='300%25'%3E%3CfeTurbulence baseFrequency='0.5' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='300' height='300' filter='url(%23a)' opacity='0.2'/%3E%3C/svg%3E");
+        }
+        
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .glow {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.05) 0%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Loading animation */
+        .loading-bar {
+            height: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05));
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 
-<body class="font-harmonyReg h-full dark:bg-gray-900 dark:text-gray-300 antialiased">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-[100] bg-white/80 dark:bg-slate-950/80 backdrop-filter backdrop-saturate-200 backdrop-brightness-100 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 transition-colors">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between h-16">
-                <!-- Left side - Logo/Home -->
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center gap-2" aria-label="Home">
-                        <button class="play-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36px" height="36px" aria-hidden="true">
-                                <rect width="36" height="36" x="0" y="0" fill="#fdd835"></rect>
-                                <path fill="#e53935" d="M38.67,42H11.52C11.27,40.62,11,38.57,11,36c0-5,0-11,0-11s1.44-7.39,3.22-9.59 c1.67-2.06,2.76-3.48,6.78-4.41c3-0.7,7.13-0.23,9,1c2.15,1.42,3.37,6.67,3.81,11.29c1.49-0.3,5.21,0.2,5.5,1.28 C40.89,30.29,39.48,38.31,38.67,42z"></path>
-                                <path fill="#b71c1c" d="M39.02,42H11.99c-0.22-2.67-0.48-7.05-0.49-12.72c0.83,4.18,1.63,9.59,6.98,9.79 c3.48,0.12,8.27,0.55,9.83-2.45c1.57-3,3.72-8.95,3.51-15.62c-0.19-5.84-1.75-8.2-2.13-8.7c0.59,0.66,3.74,4.49,4.01,11.7 c0.03,0.83,0.06,1.72,0.08,2.66c4.21-0.15,5.93,1.5,6.07,2.35C40.68,33.85,39.8,38.9,39.02,42z"></path>
-                                <path fill="#212121" d="M35,27.17c0,3.67-0.28,11.2-0.42,14.83h-2C32.72,38.42,33,30.83,33,27.17 c0-5.54-1.46-12.65-3.55-14.02c-1.65-1.08-5.49-1.48-8.23-0.85c-3.62,0.83-4.57,1.99-6.14,3.92L15,16.32 c-1.31,1.6-2.59,6.92-3,8.96v10.8c0,2.58,0.28,4.61,0.54,5.92H10.5c-0.25-1.41-0.5-3.42-0.5-5.92l0.02-11.09 c0.15-0.77,1.55-7.63,3.43-9.94l0.08-0.09c1.65-2.03,2.96-3.63,7.25-4.61c3.28-0.76,7.67-0.25,9.77,1.13 C33.79,13.6,35,22.23,35,27.17z"></path>
-                                <path fill="#01579b" d="M17.165,17.283c5.217-0.055,9.391,0.283,9,6.011c-0.391,5.728-8.478,5.533-9.391,5.337 c-0.913-0.196-7.826-0.043-7.696-5.337C9.209,18,13.645,17.32,17.165,17.283z"></path>
-                                <path fill="#212121" d="M10.154,20.201c0.261,2.059-0.196,3.351,2.543,3.546s8.076,1.022,9.402-0.554 c1.326-1.576,1.75-4.365-0.891-5.267C19.336,17.287,12.959,16.251,10.154,20.201z"></path>
-                                <path fill="#81d4fa" d="M15.078,19.043c1.957-0.326,5.122-0.529,4.435,1.304c-0.489,1.304-7.185,2.185-7.185,0.652 C12.328,19.467,15.078,19.043,15.078,19.043z"></path>
-                            </svg>
-                            <span class="now">sus</span>
-                            <span class="play">home</span>
-                        </button>    
-                    </a>
-                </div>
-
-                <!-- Desktop menu -->
-                <div class="hidden md:flex items-center gap-6">
-
-                    <!-- From Uiverse.io by EddyBel --> 
-
-                    <a href="index.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Home</a>
-                    <a href="projects.html" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">Projects</a>
-                    
-                    <a href="https://github.com/lqsky7" class="relative inline-flex items-center justify-center p-4 px-4 py-2 overflow-hidden font-medium rounded-lg shadow-2xl group">
-                        <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-[#4078c0] rounded-full blur-md ease"></span>
-                        <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
-                            <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-[#6e5494] rounded-full blur-md"></span>
-                            <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-[#bd2c00] rounded-full blur-md"></span>
-                        </span>
-                        <span class="relative text-white">GitHub Profile</span>
-                    </a>
-                </div>
+<body class="font-harmonyReg bg-black text-white antialiased">
+    <!-- Background elements -->
+    <div class="noise-bg"></div>
+    <div class="grid-bg"></div>
+    <div class="glow"></div>
+    
+    <!-- Navbar - Kept as is -->
+    <nav class="mono-navbar" id="main-navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-logo">DS</a>
+            
+            <div class="navbar-links">
+                <a href="#home" class="navbar-link">Home</a>
+                <a href="#skills" class="navbar-link">Skills</a>
+                <a href="#github" class="navbar-link">GitHub</a>
+                <a href="projects.html" class="navbar-link">Projects</a>
+                <a href="https://github.com/lqsky7" class="navbar-button">GitHub Profile</a>
             </div>
-
-            <!-- Mobile menu -->
-            <div id="mobile-menu" class="hidden md:hidden">
-                <div class="px-2 pt-2 pb-3 space-y-1 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg rounded-b-lg">
-                    <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800/50">Home</a>
-                    <a href="projects.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800/50">Projects</a>
-                    <a href="https://github.com/lqsky7" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800/50">GitHub Profile</a>
-                </div>
+            
+            <button class="navbar-mobile-toggle" id="navbar-toggle">
+                <span class="toggle-bar"></span>
+                <span class="toggle-bar"></span>
+                <span class="toggle-bar"></span>
+            </button>
+        </div>
+        
+        <div class="navbar-mobile" id="navbar-mobile">
+            <div class="navbar-mobile-links">
+                <a href="#home" class="navbar-mobile-link">Home</a>
+                <a href="#skills" class="navbar-mobile-link">Skills</a>
+                <a href="#github" class="navbar-mobile-link">GitHub</a>
+                <a href="projects.html" class="navbar-mobile-link">Projects</a>
+                <a href="https://github.com/lqsky7" class="navbar-button mt-5">GitHub Profile</a>
             </div>
         </div>
     </nav>
 
-    <main class="min-h-screen relative pt-20">
-        <!-- Background patterns -->
-        <div class="absolute inset-0 -z-10 h-full w-full">
-            <!-- Light mode background -->
-            <div class="dark:hidden">
-                <div class="absolute inset-0 bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-                <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-400 opacity-20 blur-[100px]"></div>
-            </div>
-
-            <!-- Dark mode background -->
-            <div class="hidden dark:block">
-                <div class="absolute inset-0 bg-slate-950"></div>
-                <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-                <div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
-                <div class="absolute bottom-0 right-[+33%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
-
-            </div>
-        </div>
-
-        <!-- Main content -->
-        <div class="relative z-10 max-w-7xl mx-auto px-4 py-8">
-            <!-- Profile Section -->
-            <section class="text-center mb-16 animate-fade-in">
-                <h1 class="text-6xl pt-10 mb-4 font-harmonyLight dark:text-gray-100 animate-text">
-                    <script>
-                        // Add this script right after the h1 element
-                        document.currentScript.parentElement.innerHTML = 'Diljot_Singh'.split('').map((char, i) => 
-                            `<span style="animation-delay: ${i * 0.1}s">${char}</span>`
-                        ).join('');
-                    </script>
+    <main class="pt-24">
+        <!-- Hero section with name-aurora applied only to the name -->
+        <section id="home" class="min-h-screen flex flex-col justify-center items-center px-5 pb-16">
+            <div class="max-w-4xl mx-auto text-center">
+                <!-- Only the name gets the special multi-color aurora effect -->
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="name-aurora">Diljot_Singh</span>
                 </h1>
-                <p class="text-2xl text-gray-600 dark:text-gray-400 mb-12">Fresher at Vellore Institute of Technology</p>
-                <div class="flex flex-col items-center gap-4">
+                
+                <p class="text-xl md:text-2xl text-gray-400 mb-12">
+                    Fresher at Vellore Institute of Technology
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-5">
+                    <a href="https://linkedin.com/in/dslqsky7" class="mono-button">
+                        <i class="fab fa-linkedin mr-2"></i> LinkedIn
+                    </a>
+                    <a href="mailto:your.email@example.com" class="mono-button">
+                        <i class="fas fa-envelope mr-2"></i> Email
+                    </a>
+                </div>
+                
+                <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 animate-bounce">
+                    <a href="#skills" class="text-gray-400 hover:text-white transition-colors duration-300">
+                        <i class="fas fa-chevron-down text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                  
-
-                  <a href="https://linkedin.com/in/dslqsky7" class="relative border-yellow-50 inline-flex items-center justify-center inline-block p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 rounded-lg shadow-2xl group">
-                     <span class="absolute top-0 left-0 w-40 h-40 -mt-10 -ml-3 transition-all duration-700 bg-blue-700 rounded-full blur-md ease"></span>
-                     <span class="absolute inset-0 w-full h-full transition duration-700 group-hover:rotate-180 ease">
-                         <span class="absolute bottom-0 left-0 w-24 h-24 -ml-10 bg-purple-500 rounded-full blur-md"></span>
-                         <span class="absolute bottom-0 right-0 w-24 h-24 -mr-10 bg-blue-500 rounded-full blur-md"></span>
-                     </span>
-                     <span class="relative text-white">LinkedIn Profile</span>
-                 </a>
-                 
-                 <a href="mailto:your.email@example.com" class="mail-button">
-                    <div class="svg-wrapper">
-                      <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" fill="currentColor"></path>
-                      </svg>
-                    </div>
-                    <span>Mail</span>
-                  </a>
-                 
-                </div>
-            </section>
-
-            <!-- Skills Grid -->
-            <div class="grid grid-cols-1 pt-6 md:grid-cols-6 gap-8 mb-16">
-                <!-- Programming Languages -->
-                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fab fa-python"></i>
-                        Core Languages
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fab fa-python text-blue-400 dark:text-pink-200"></i>
-                            <span class="font-medium">Python Development</span>
-                        </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-blue-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fas fa-c text-yellow-600 dark:text-lime-200"></i>
-                            <span class="font-medium">C/C++</span>
+        <!-- Skills section with regular white text for headings -->
+        <section id="skills" class="py-20 px-5 md:px-10">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 border-b border-gray-800 pb-4 fade-in">
+                    Skillset
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Languages -->
+                    <div class="mono-card fade-in" data-delay="100">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fab fa-python text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Core Languages
+                                </h3>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="skill-bubble">
+                                    <i class="fab fa-python"></i>
+                                    <span>Python Development</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fas fa-code"></i>
+                                    <span>C/C++</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            
-                <!-- Web Technologies -->
-                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fas fa-code text-red-300 dark:text-red-300"></i>
-                        Web Stack
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fab fa-html5 text-red-500 dark:text-rose-200"></i>
-                            <span>HTML5</span>
-                        </div>
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fab fa-css3-alt text-blue-500 dark:text-cyan-200"></i>
-                            <span>CSS3</span>
-                        </div>
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fas fa-wind text-teal-500 dark:text-sky-200"></i>
-                            <span>Tailwind</span>
-                        </div>
-                        <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-green-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fab fa-js text-yellow-500 dark:text-amber-200"></i>
-                            <span>JavaScript</span>
-                        </div>
-                    </div>
-                </div>
-            
-                <!-- Systems -->
-                <div class="md:col-span-2 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fab fa-linux dark:text-yellow-200"></i>
-                        Systems
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-orange-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fab fa-ubuntu text-orange-500 dark:text-orange-200"></i>
-                            <span class="font-medium">Linux Systems</span>
-                        </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-orange-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fab fa-docker text-blue-500 dark:text-sky-200"></i>
-                            <span class="font-medium">Containerization</span>
+                    
+                    <!-- Web -->
+                    <div class="mono-card fade-in" data-delay="200">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fas fa-code text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Web Stack
+                                </h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="skill-bubble">
+                                    <i class="fab fa-html5"></i>
+                                    <span>HTML5</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fab fa-css3-alt"></i>
+                                    <span>CSS3</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fas fa-wind"></i>
+                                    <span>Tailwind</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fab fa-js"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-        
-
-                <!-- Backend -->
-                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-server"></i>
-                        Backend
-                        
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700/40 transition">
-                            <i class="fa fa-server text-orange-600 dark:text-violet-200"></i>
-                            <span class="font-medium">Express.js</span>
-                        </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fa-brands fa-node text-blue-500 dark:text-green-200"></i>
-                            <span class="font-medium">Node.js</span>
+                    
+                    <!-- Systems -->
+                    <div class="mono-card fade-in" data-delay="300">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fab fa-linux text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Systems
+                                </h3>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="skill-bubble">
+                                    <i class="fab fa-ubuntu"></i>
+                                    <span>Linux Systems</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fab fa-docker"></i>
+                                    <span>Containerization</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            
-                <!-- Others -->
-                <div class="md:col-span-3 hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-record-vinyl"></i>
-                        Others
-                    </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fa-brands fa-kaggle text-blue-500 dark:text-purple-200"></i>
-                            <span class="font-medium">Kaggle and Basic ML</span>
+                    
+                    <!-- Backend -->
+                    <div class="mono-card fade-in" data-delay="400">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-server text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Backend
+                                </h3>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="skill-bubble">
+                                    <i class="fa fa-server"></i>
+                                    <span>Express.js</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fa-brands fa-node"></i>
+                                    <span>Node.js</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fa-solid fa-microchip dark:text-slate-200"></i>
-                            <span class="font-medium">Worked with Android/Linux Kernels</span>
-                        </div>
-                        <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-slate-800/30 dark:backdrop-blur-sm rounded-lg hover:bg-pink-50 dark:hover:bg-slate-700/40 transition">
-                            <i class="fa-brands fa-android text-emerald-500 dark:text-lime-200"></i>
-                            <span class="font-medium">Custom Roms/Magisk Mods</span>
+                    </div>
+                    
+                    <!-- Others -->
+                    <div class="mono-card fade-in col-span-1 md:col-span-2" data-delay="500">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-record-vinyl text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Others
+                                </h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="skill-bubble">
+                                    <i class="fa-brands fa-kaggle"></i>
+                                    <span>Kaggle and Basic ML</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fa-solid fa-microchip"></i>
+                                    <span>Android/Linux Kernels</span>
+                                </div>
+                                <div class="skill-bubble">
+                                    <i class="fa-brands fa-android"></i>
+                                    <span>Custom Roms/Magisk Mods</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- GitHub Stats Section -->
-            <section class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Profile Stats Card -->
-                <div class="hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-line text-blue-500 dark:text-blue-400"></i>
-                        Profile Stats
-                    </h2>
-                    <div id="github-stats">Loading...</div>
+        </section>
+
+        <!-- GitHub stats section with regular white text for headings -->
+        <section id="github" class="py-20 px-5 md:px-10">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 border-b border-gray-800 pb-4 fade-in">
+                    GitHub Activity
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Profile Stats Card -->
+                    <div class="mono-card fade-in" data-delay="100">
+                        <div class="p-6 h-full">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-chart-line text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Profile Stats
+                                </h3>
+                            </div>
+                            <div id="github-stats" class="flex flex-col justify-center h-full">
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Languages Card -->
+                    <div class="mono-card fade-in" data-delay="200">
+                        <div class="p-6 h-full">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-code text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Top Languages
+                                </h3>
+                            </div>
+                            <div id="github-languages" class="h-full">
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Recent Repos Card -->
+                    <div class="mono-card fade-in" data-delay="300">
+                        <div class="p-6 h-full">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-folder-open text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Recent Repositories
+                                </h3>
+                            </div>
+                            <div id="github-repos" class="h-full">
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Latest Commit Card -->
+                    <div class="mono-card fade-in" data-delay="400">
+                        <div class="p-6 h-full">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-code-commit text-xl"></i>
+                                <h3 class="text-xl font-semibold">
+                                    Latest Commit
+                                </h3>
+                            </div>
+                            <div id="latest-commit" class="h-full">
+                                <div class="loading-bar"></div>
+                                <div class="loading-bar"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            
-                <!-- Languages Card -->
-                <div class="hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-code text-violet-500 dark:text-violet-400"></i>
-                        Top Languages
-                    </h2>
-                    <div id="github-languages" class="space-y-2">Loading...</div>
-                </div>
-            
-                <!-- Recent Repos Card -->
-                <div class="hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-folder-open text-fuchsia-500 dark:text-fuchsia-400"></i>
-                        Recent Repositories
-                    </h2>
-                    <div id="github-repos" class="space-y-2">Loading...</div>
-                </div>
-            
-                <!-- Latest Commit Card -->
-                <div class="hover-scale skill-card bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-code-commit text-rose-500 dark:text-rose-400"></i>
-                        Latest Commit
-                    </h2>
-                    <div id="latest-commit">Loading...</div>
-                </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </main>
-    <footer class="sticky-footer bg-white/80 dark:bg-slate-950/80 backdrop-filter backdrop-blur-lg border-t border-gray-200 dark:border-gray-700 py-4 mt-16">
-      <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
-          &copy; 2025 DS
+    
+    <footer class="py-8 px-5 md:px-10 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-400">&copy; 2025 Diljot Singh</p>
         </div>
-  </footer>
-  
-  <style>
-      .sticky-footer {
-          position: sticky;
-          top: 100vh;
-      }
-  </style>
-  
+    </footer>
+    
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('main-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const navbarToggle = document.getElementById('navbar-toggle');
+        const navbarMobile = document.getElementById('navbar-mobile');
+        
+        navbarToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navbarMobile.classList.toggle('active');
+            
+            if (navbarMobile.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+                
+                // Animate toggle bars
+                const bars = this.querySelectorAll('.toggle-bar');
+                bars[0].style.transform = 'translateY(7px) rotate(45deg)';
+                bars[1].style.opacity = '0';
+                bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+            } else {
+                document.body.style.overflow = '';
+                
+                // Reset toggle bars
+                const bars = this.querySelectorAll('.toggle-bar');
+                bars[0].style.transform = '';
+                bars[1].style.opacity = '';
+                bars[2].style.transform = '';
+            }
+        });
+        
+        // Mobile menu links - close menu on click
+        const mobileLinks = document.querySelectorAll('.navbar-mobile-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navbarToggle.classList.remove('active');
+                navbarMobile.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Reset toggle bars
+                const bars = navbarToggle.querySelectorAll('.toggle-bar');
+                bars[0].style.transform = '';
+                bars[1].style.opacity = '';
+                bars[2].style.transform = '';
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        function checkFade() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const delay = element.getAttribute('data-delay') || 0;
+                
+                if (elementTop < window.innerHeight - 100) {
+                    setTimeout(() => {
+                        element.classList.add('visible');
+                    }, delay);
+                }
+            });
+        }
+        
+        // Check elements on load
+        document.addEventListener('DOMContentLoaded', checkFade);
+        
+        // Check elements on scroll
+        window.addEventListener('scroll', checkFade);
+        
+        // Moving glow effect with mouse
+        const glow = document.querySelector('.glow');
+        
+        document.addEventListener('mousemove', function(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            glow.style.left = x + 'px';
+            glow.style.top = y + 'px';
+        });
+    </script>
 </body>
 </html>
