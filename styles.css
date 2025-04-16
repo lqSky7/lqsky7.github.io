@@ -36,6 +36,33 @@
     to { transform: translateY(-0.1em); }
 }
 
+@keyframes fly-2 {
+    from { transform: translateY(0.2em); }
+    to { transform: translateY(-0.15em); }
+}
+
+@keyframes fly-3 {
+    from { transform: translateY(0.15em); }
+    to { transform: translateY(-0.2em); }
+}
+
+@keyframes trail {
+    0% { transform: scale(0.2); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes cardGlow {
+    0%, 100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 0 rgba(255, 255, 255, 0); }
+    50% { box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1); }
+}
+
+@keyframes morphGradient {
+    0% { background-position: 0% 50%; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { background-position: 100% 50%; border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    100% { background-position: 0% 50%; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
 @keyframes cardSpawn {
     0% {
         opacity: 0;
@@ -47,10 +74,93 @@
     }
 }
 
+/* Add ScrollTrigger animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes progressBar {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* ScrollTrigger animation classes */
+.scroll-fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scroll-fade-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scroll-fade-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scroll-scale {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scroll-progress {
+    width: 0;
+    transition: width 1s ease;
+}
+
+/* ScrollTrigger activated states */
+.scroll-fade-up.active,
+.scroll-fade-left.active,
+.scroll-fade-right.active,
+.scroll-scale.active {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+.scroll-progress.active {
+    width: 100%;
+}
+
+.scroll-stagger-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.scroll-stagger-item.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Animation classes */
 .animate-float { animation: float 3s ease-in-out infinite; }
 .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
 .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+.animate-trail { animation: trail 1.5s ease-out forwards; }
+.animate-card-glow { animation: cardGlow 4s ease-in-out infinite; }
+.animate-morph { animation: morphGradient 15s ease-in-out infinite; }
 
 /* Text animation */
 .animate-text {
@@ -64,15 +174,15 @@
     animation: revealLetter 0.3s ease-in-out forwards;
 }
 
-/* Card styling */
-.hover-scale {
-    transform: perspective(800px) translateZ(0);
+/* Remove 3D Card styling that responds to mouse movement */
+/* Card styling - simplified non-3D version */
+.card-simple {
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    backface-visibility: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.hover-scale:hover {
-    transform: perspective(800px) translateZ(50px) translateY(-5px);
+.card-simple:hover {
+    transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
 }
 
@@ -96,31 +206,30 @@
 .skill-card::after {
     content: '';
     position: absolute;
-    border-radius: 9999px;
+    border-radius: 50%;
     filter: blur(2rem);
+    opacity: 0.5;
     transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    opacity: 0.7;
-    z-index: 1;
+    z-index: -1;
 }
 
 .skill-card::before {
-    width: 3rem;
-    height: 3rem;
-    right: 0.25rem;
-    top: 0.25rem;
+    width: 8rem;
+    height: 8rem;
+    right: 5rem;
+    bottom: -3rem;
 }
 
 .skill-card::after {
-    width: 5rem;
-    height: 5rem;
-    right: 2rem;
-    top: 0.75rem;
+    width: 10rem;
+    height: 10rem;
+    left: -3rem;
+    bottom: -5rem;
 }
 
-/* Card colors */
-.skill-card:nth-child(1)::before { background: rgb(139, 92, 246); }
-.skill-card:nth-child(1)::after { background: rgb(251, 113, 133); }
-.skill-card:nth-child(2)::before { background: rgb(99, 102, 241); }
+.skill-card:nth-child(1)::before { background: rgb(59, 130, 246); }
+.skill-card:nth-child(1)::after { background: rgb(16, 185, 129); }
+.skill-card:nth-child(2)::before { background: rgb(168, 85, 247); }
 .skill-card:nth-child(2)::after { background: rgb(244, 114, 182); }
 .skill-card:nth-child(3)::before { background: rgb(234, 88, 12); }
 .skill-card:nth-child(3)::after { background: rgb(234, 179, 8); }
@@ -138,54 +247,123 @@
     right: 3rem;
     bottom: -2rem;
     filter: blur(2.5rem);
+    transform: rotate(-15deg) scale(1.1);
 }
 
 .skill-card:hover::after {
-    transform: translateX(30px);
+    transform: translateX(30px) rotate(15deg) scale(1.1);
     filter: blur(2.5rem);
 }
 
 /* Content z-index */
-.skill-card h2,
-.skill-card .space-y-4 {
+.skill-card > div {
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
-/* Mail button */
+/* Button animations */
+.fly-button {
+    position: relative;
+    display: inline-block;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.fly-button:hover .fly-word {
+    transform: translateY(-1.2em);
+    color: transparent;
+}
+
+.fly-word {
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.fly-letter {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.fly-button:hover .fly-letter:nth-child(1) {
+    transform: translate(0, -1em);
+    animation: fly-1 0.7s ease-in-out infinite alternate;
+}
+
+.fly-button:hover .fly-letter:nth-child(2) {
+    transform: translate(0.5em, -0.5em);
+    animation: fly-2 0.7s ease-in-out infinite alternate 0.1s;
+}
+
+.fly-button:hover .fly-letter:nth-child(3) {
+    transform: translate(1em, -0.5em);
+    animation: fly-3 0.7s ease-in-out infinite alternate 0.2s;
+}
+
+.fly-button:hover .fly-letter:nth-child(4) {
+    transform: translate(1.5em, -1em);
+    animation: fly-1 0.7s ease-in-out infinite alternate 0.3s;
+}
+
+.fly-button:hover .fly-letter:nth-child(5) {
+    transform: translate(2em, -0.5em);
+    animation: fly-2 0.7s ease-in-out infinite alternate 0.4s;
+}
+
+.fly-button:hover .fly-letter:nth-child(6) {
+    transform: translate(2.5em, -0.5em);
+    animation: fly-3 0.7s ease-in-out infinite alternate 0.5s;
+}
+
+.fly-button:hover .fly-letter:nth-child(7) {
+    transform: translate(3em, -1em);
+    animation: fly-1 0.7s ease-in-out infinite alternate 0.6s;
+}
+
+.fly-button:hover .fly-letter:nth-child(8) {
+    transform: translate(3.5em, -0.5em);
+    animation: fly-2 0.7s ease-in-out infinite alternate 0.7s;
+}
+
+.fly-button:hover .fly-letter:nth-child(9) {
+    transform: translate(4em, -0.5em);
+    animation: fly-3 0.7s ease-in-out infinite alternate 0.8s;
+}
+
+/* Email button with shine animation */
 .mail-button {
-    font-family: inherit;
-    font-size: 18px;
-    background: royalblue;
-    color: white;
-    padding: 0.7em 1em;
-    padding-left: 0.9em;
-    display: flex;
+    position: relative;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 0.7em 2em;
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
     border: none;
-    border-radius: 40px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: 5px;
     overflow: hidden;
-    transition: all 0.2s;
+    transition: 0.5s;
     cursor: pointer;
 }
 
 .mail-button span {
-    display: block;
-    margin-left: 0.3em;
-    transition: all 0.3s ease-in-out;
+    position: absolute;
+    transform: translateX(0);
+    transition: 0.3s;
 }
 
-.mail-button svg {
-    display: block;
-    transform-origin: center center;
-    transition: transform 0.3s ease-in-out;
+.mail-button i {
+    position: relative;
+    font-size: 1.5em;
+    transition: 0.3s ease-out;
 }
 
-.mail-button:hover .svg-wrapper {
-    animation: fly-1 0.6s ease-in-out infinite alternate;
-}
-
-.mail-button:hover svg {
+.mail-button:hover i {
     transform: translateX(1.2em) rotate(45deg) scale(1.1);
 }
 
@@ -197,7 +375,7 @@
     transform: scale(0.95);
 }
 
-/* Play button */
+/* Enhanced play button */
 .play-button {
     display: flex;
     align-items: center;
@@ -256,7 +434,72 @@
     transition-delay: 300ms;
 }
 
-/* Toggle switch */
+/* Advanced 3D button effect */
+.button-3d {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.button-3d-front {
+    display: block;
+    position: relative;
+    padding: 12px 42px;
+    border-radius: 8px;
+    background: linear-gradient(0deg, #2c2c2c 0%, #3d3d3d 100%);
+    color: white;
+    transform: translateZ(10px);
+    will-change: transform;
+    transition: transform 250ms;
+}
+
+.button-3d-front::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    opacity: 0;
+    transition: opacity 250ms;
+}
+
+.button-3d-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background: #121212;
+    transform: translateZ(-10px);
+}
+
+.button-3d:hover {
+    filter: brightness(110%);
+}
+
+.button-3d:hover .button-3d-front {
+    transform: translateZ(20px);
+}
+
+.button-3d:hover .button-3d-front::before {
+    opacity: 1;
+}
+
+.button-3d:active .button-3d-front {
+    transform: translateZ(0px);
+}
+
+/* Animated toggle switch */
 .toggle {
     position: relative;
     width: 20px;  
@@ -311,7 +554,7 @@
     transition-delay: 0s, calc(0s + 0.35s);
 }
 
-/* Theme switch */
+/* Advanced theme switch */
 .switch {
     font-size: 17px;
     position: relative;
@@ -385,13 +628,36 @@
     transform: translateX(1.5em);
 }
 
-/* GitHub stats cards */
+/* Enhanced GitHub stats cards */
 .github-card {
     transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    position: relative;
+    overflow: hidden;
 }
 
 .github-card:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.github-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+        transparent 20%, 
+        rgba(255, 255, 255, 0.05) 40%,
+        rgba(255, 255, 255, 0.05) 60%,
+        transparent 80%);
+    transform: translateX(-100%);
+    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.github-card:hover::after {
+    transform: translateX(100%);
 }
 
 /* Loading animation for GitHub data */
@@ -431,7 +697,7 @@ a:focus-visible, button:focus-visible {
     outline-offset: 2px;
 }
 
-/* Improve mobile menu animation */
+/* Mobile menu animation */
 #mobile-menu {
     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     opacity: 0;
@@ -443,7 +709,7 @@ a:focus-visible, button:focus-visible {
     transform: translateY(0);
 }
 
-/* Scroll reveal animation */
+/* Advanced scroll reveal animation - enhanced for ScrollTrigger */
 .reveal {
     opacity: 0;
     transform: translateY(20px);
@@ -455,7 +721,19 @@ a:focus-visible, button:focus-visible {
     transform: translateY(0);
 }
 
-/* Page transitions */
+/* Scroll-based parallax effect */
+.parallax-scroll {
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: transform;
+}
+
+/* Scroll-based speed controller */
+.scroll-speed-1 { transition-duration: 0.5s; }
+.scroll-speed-2 { transition-duration: 1s; }
+.scroll-speed-3 { transition-duration: 1.5s; }
+
+/* Enhanced page transitions */
 .page-transition {
     position: fixed;
     top: 0;
@@ -473,4 +751,137 @@ html.dark .page-transition {
 
 .theme-transition {
     transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Animated background */
+.animated-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-bg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.15) 100%);
+    animation: rotateGradient 20s linear infinite;
+    z-index: -1;
+}
+
+@keyframes rotateGradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Liquid button effect */
+.liquid-button {
+    position: relative;
+    display: inline-block;
+    padding: 10px 25px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 1;
+}
+
+.liquid-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.liquid-button:hover {
+    border-color: transparent;
+    color: white;
+}
+
+.liquid-button:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* 3D Text effect */
+.text-3d {
+    position: relative;
+    text-shadow: 
+        1px 1px 1px rgba(255, 255, 255, 0.15),
+        2px 2px 2px rgba(255, 255, 255, 0.1),
+        3px 3px 3px rgba(255, 255, 255, 0.05);
+    transition: all 0.3s;
+}
+
+.text-3d:hover {
+    text-shadow:
+        1px 1px 1px rgba(255, 255, 255, 0.2),
+        2px 2px 2px rgba(255, 255, 255, 0.15),
+        3px 3px 3px rgba(255, 255, 255, 0.1),
+        4px 4px 4px rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+/* Glitch text effect */
+.glitch-text {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+
+.glitch-text::before {
+    animation: glitch-anim-1 2s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    transform: translate(-0.04em, -0.03em);
+    opacity: 0.8;
+}
+
+.glitch-text::after {
+    animation: glitch-anim-2 2.5s infinite;
+    clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+    transform: translate(0.04em, 0.03em);
+    opacity: 0.8;
+}
+
+@keyframes glitch-anim-1 {
+    0% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
+    14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
+    15% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75); }
+    49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75); }
+    50% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75); }
+    99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75); }
+    100% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
+    14% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
+    15% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75); }
+    49% { text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75), 0.025em 0.025em 0 rgba(0, 255, 0, 0.75); }
+    50% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75); }
+    99% { text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75), 0.05em 0 0 rgba(0, 255, 0, 0.75); }
+    100% { text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75), -0.05em -0.025em 0 rgba(0, 255, 0, 0.75); }
 }
