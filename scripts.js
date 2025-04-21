@@ -25,6 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize magnetic buttons
     initMagneticButtons();
+    
+    // Initialize card tilt effects
+    initCardTilt();
+    
+    // Initialize skill bubble hover effects
+    initSkillBubbles();
 });
 
 // Setup theme toggle functionality
@@ -492,6 +498,92 @@ function initMagneticButtons() {
     });
 }
 
+// Initialize 3D tilt effect for mono-cards
+function initCardTilt() {
+    const cards = document.querySelectorAll('.mono-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const angleX = (y - centerY) / 20;
+            const angleY = (centerX - x) / 20;
+            
+            anime({
+                targets: card,
+                rotateX: angleX,
+                rotateY: angleY,
+                translateZ: 10,
+                duration: 100,
+                easing: 'linear'
+            });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            anime({
+                targets: card,
+                rotateX: 0,
+                rotateY: 0,
+                translateZ: 0,
+                duration: 500,
+                easing: 'easeOutElastic'
+            });
+        });
+    });
+}
+
+// Initialize hover effects for skill bubbles
+function initSkillBubbles() {
+    const bubbles = document.querySelectorAll('.skill-bubble');
+    
+    bubbles.forEach(bubble => {
+        bubble.addEventListener('mouseenter', () => {
+            const icon = bubble.querySelector('i');
+            const text = bubble.querySelector('span');
+            
+            anime({
+                targets: icon,
+                rotate: '+=15',
+                scale: 1.2,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+            
+            anime({
+                targets: text,
+                translateX: 5,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+        
+        bubble.addEventListener('mouseleave', () => {
+            const icon = bubble.querySelector('i');
+            const text = bubble.querySelector('span');
+            
+            anime({
+                targets: icon,
+                rotate: '-=15',
+                scale: 1,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+            
+            anime({
+                targets: text,
+                translateX: 0,
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        });
+    });
+}
+
 // Page transition effects
 window.addEventListener('beforeunload', function() {
     const transition = document.createElement('div');
@@ -502,3 +594,74 @@ window.addEventListener('beforeunload', function() {
     transition.style.transition = 'transform 0.5s ease';
     transition.style.transform = 'translateY(0)';
 });
+
+/**
+ * Initialize text scramble effect
+ * @param {HTMLElement} el - The element to apply the effect to
+ * @param {Array} texts - Array of texts to cycle through
+ */
+class TextScramble {
+    constructor(el) {
+        this.el = el;
+        this.chars = '!<>-_\\/[]{}—=+*^?#________';
+        this.update = this.update.bind(this);
+    }
+    
+    setText(newText) {
+        const oldText = this.el.innerText;
+        const length = Math.max(oldText.length, newText.length);
+        const promise = new Promise((resolve) => this.resolve = resolve);
+        this.queue = [];
+        
+        for (let i = 0; i < length; i++) {
+            const from = oldText[i] || '';
+            const to = newText[i] || '';
+            const start = Math.floor(Math.random() * 40);
+            const end = start + Math.floor(Math.random() * 40);
+            this.queue.push({ from, to, start, end });
+        }
+        
+        cancelAnimationFrame(this.frameRequest);
+        this.frame = 0;
+        this.update();
+        return promise;
+    }
+    
+    update() {
+        let output = '';
+        let complete = 0;
+        
+        for (let i = 0, n = this.queue.length; i < n; i++) {
+            let { from, to, start, end, char } = this.queue[i];
+            
+            if (this.frame >= end) {
+                complete++;
+                output += to;
+            } else if (this.frame >= start) {
+                if (!char || Math.random() < 0.28) {
+                    char = this.randomChar();
+                    this.queue[i].char = char;
+                }
+                output += `<span class="dud">${char}</span>`;
+            } else {
+                output += from;
+            }
+        }
+        
+        this.el.innerHTML = output;
+        
+        if (complete === this.queue.length) {
+            this.resolve();
+        } else {
+            this.frameRequest = requestAnimationFrame(this.update);
+            this.frame++;
+        }
+    }
+    
+    randomChar() {
+        return this.chars[Math.floor(Math.random() * this.chars.length)];
+    }
+}
+
+// Export the TextScramble class for use in other scripts
+window.TextScramble = TextScramble;
